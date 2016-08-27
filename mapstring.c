@@ -1017,7 +1017,7 @@ char ** msStringSplitComplex( const char * pszString,
     papszRetList = (char **) msSmallMalloc(sizeof(char *)*1);
 
   *num_tokens = nRetLen;
-  free(pszToken);
+  msFree(pszToken);
 
   return papszRetList;
 }
@@ -1348,8 +1348,8 @@ void msDecodeHTMLEntities(const char *string)
     pszBuffer = pszAmp + 1;
   }
 
-  free(pszReplace);
-  free(pszEnd);
+  msFree(pszReplace);
+  msFree(pszEnd);
 
   return;
 }
@@ -1701,7 +1701,7 @@ char *msGetFriBidiEncodedString(const char *string, const char *encoding)
 
 #endif
 
-    free(visual);
+    msFree(visual);
     return msStrdup(outstring);
   }
 }
