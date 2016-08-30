@@ -127,8 +127,7 @@ int msEvalRegex(const char *e, const char *s)
 #ifdef USE_MSFREE
 void msFree(void *p)
 {
-  //if(p) free(p);
-  if (p) free(p);
+  if(p) msFree(p);
 }
 #endif
 
@@ -1910,7 +1909,7 @@ static int loadLabel(labelObj *label)
         if(label->position == MS_BINDING) {
           if(label->bindings[MS_LABEL_BINDING_POSITION].item != NULL)
             msFree(label->bindings[MS_LABEL_BINDING_POSITION].item);
-          label->bindings[MS_LABEL_BINDING_POSITION].item = msStrdup(msyystring_buffer);
+          label->bindings[MS_LABEL_BINDING_POSITION].item = strdup(msyystring_buffer);
           label->numbindings++;
         }
         break;
