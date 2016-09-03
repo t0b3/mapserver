@@ -250,7 +250,7 @@ static void bindLabel(layerObj *layer, shapeObj *shape, labelObj *label, int dra
     }
 
     if(label->bindings[MS_LABEL_BINDING_POSITION].index != -1) {
-      int tmpPosition;
+      int tmpPosition = 0;
       bindIntegerAttribute(&tmpPosition, shape->values[label->bindings[MS_LABEL_BINDING_POSITION].index]);
       if(tmpPosition != 0) { /* is this test sufficient? */
         label->position = tmpPosition;
@@ -423,7 +423,7 @@ int msEvalContext(mapObj *map, layerObj *layer, char *context)
         e.string = msReplaceSubstring(e.string, tag, "0");
     }
 
-    msFree(tag);
+    free(tag);
   }
 
   msTokenizeExpression(&e, NULL, NULL);
@@ -956,7 +956,7 @@ void msFreeImage(imageObj *image)
       while(cur) {
         msFreeImage(cur->image);
         next = cur->next;
-        msFree(cur);
+        free(cur);
         cur = next;
       }
       image->ntiles = 0;
@@ -970,9 +970,9 @@ void msFreeImage(imageObj *image)
                  "msFreeImage()");
 
     if (image->imagepath)
-      msFree(image->imagepath);
+      free(image->imagepath);
     if (image->imageurl)
-      msFree(image->imageurl);
+      free(image->imageurl);
 
     if( --image->format->refcount < 1 )
       msFreeOutputFormat( image->format );
@@ -1015,7 +1015,7 @@ int *msGetLayersIndexByGroup(mapObj *map, char *groupname, int *pnCount)
   }
 
   if (iLayer == 0) {
-    msFree(aiIndex);
+    free(aiIndex);
     aiIndex = NULL;
     *pnCount = 0;
   } else {
@@ -1394,7 +1394,7 @@ void msForceTmpFileBase( const char *new_base )
   /*      Clear previous setting, if any.                                 */
   /* -------------------------------------------------------------------- */
   if( ForcedTmpBase != NULL ) {
-    msFree( ForcedTmpBase );
+    free( ForcedTmpBase );
     ForcedTmpBase = NULL;
   }
 
@@ -1429,8 +1429,8 @@ char *msTmpFile(mapObj *map, const char *mappath, const char *tmppath, const cha
 
   fullFname = msBuildPath(szPath, tmpBase, tmpFileName);
 
-  msFree(tmpFileName);
-  msFree(tmpBase);
+  free(tmpFileName);
+  free(tmpBase);
 
   if (fullFname)
     return msStrdup(fullFname);
@@ -1478,7 +1478,7 @@ char *msTmpPath(mapObj *map, const char *mappath, const char *tmppath)
   }
 
   fullPath = msBuildPath(szPath, mappath, tmpBase);
-  return strdup(fullPath);
+  return msStrdup(fullPath);
 }
 
 /**********************************************************************
@@ -1505,8 +1505,8 @@ char *msTmpFilename(const char *ext)
   snprintf(tmpFname, tmpFnameBufsize, "%s_%x.%s", tmpId, tmpCount++, ext);
   msReleaseLock( TLOCK_TMPFILE );
 
-  fullFname = strdup(tmpFname);
-  msFree(tmpFname);
+  fullFname = msStrdup(tmpFname);
+  free(tmpFname);
 
   return fullFname;
 }
@@ -1857,7 +1857,7 @@ shapeObj *msOffsetPolyline(shapeObj *p, double offsetx, double offsety)
       msAddLineDirectly(ret,tmp1->line + i);
     }
     msFreeShape(tmp1);
-    msFree(tmp1);
+    free(tmp1);
     return ret;
   }
 
@@ -2205,7 +2205,7 @@ void msBufferAppend(bufferObj *buffer, void *data, size_t length)
 void msBufferFree(bufferObj *buffer)
 {
   if(buffer->available>0)
-    msFree(buffer->data);
+    free(buffer->data);
 }
 
 
@@ -2517,7 +2517,7 @@ int msMapSetLayerProjections(mapObj* map)
                 glp->project = MS_TRUE;
               }
             }
-            msFree(lidx);
+            free(lidx);
           } else {
             /* group name did not match, check by layer name */
             int layer_idx = msGetLayerIndex(map,lp->connection);
@@ -2579,9 +2579,9 @@ shapeObj* msGeneralize(shapeObj *shape, double tolerance)
   
   /* Clean shape */
   for (i=0; i < newShape->numlines; i++)
-    msFree(newShape->line[i].point);
+    free(newShape->line[i].point);
   newShape->numlines = 0;
-  if (newShape->line) msFree(newShape->line);
+  if (newShape->line) free(newShape->line);
     
   msAddLine(newShape, &newLine);
   
