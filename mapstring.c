@@ -2125,7 +2125,7 @@ char *msStrdup( const char * pszString )
   if( pszString == NULL )
     pszString = "";
 
-  pszReturn = strdup( pszString );
+  pszReturn = msStrdup( pszString );
 
   if( pszReturn == NULL ) {
     fprintf(stderr, "msSmallMsStrdup(): Out of memory allocating %ld bytes.\n",
