@@ -1845,7 +1845,7 @@ int msMSSQL2008LayerGetShapeRandom(layerObj *layer, shapeObj *shape, long *recor
           find_bounds(shape);
         }
 
-        //free(wkbBuffer);
+        //msFree(wkbBuffer);
         msFree(wkbTemp);
       }
 
@@ -2683,7 +2683,7 @@ int msMSSQL2008LayerTranslateFilter(layerObj *layer, expressionObj *filter, char
     snippet = (char *) msSmallMalloc(strlen(strtmpl) + strlen(filter->string));
     sprintf(snippet, strtmpl, filter->string);  // TODO: escape filter->string
     filter->native_string = msStringConcatenate(filter->native_string, snippet);
-    free(snippet);
+    msFree(snippet);
 
     if(filter->flags & MS_EXP_INSENSITIVE) 
         filter->native_string = msStringConcatenate(filter->native_string, ")");
@@ -2703,7 +2703,7 @@ int msMSSQL2008LayerTranslateFilter(layerObj *layer, expressionObj *filter, char
     filter->native_string = msStringConcatenate(filter->native_string, snippet);
 
     filter->native_string = msStringConcatenate(filter->native_string, "')");
-    free(snippet);
+    msFree(snippet);
   } else if(filter->type == MS_EXPRESSION) {
     
       if(layer->debug >= 2) 

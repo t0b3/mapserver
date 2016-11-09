@@ -315,14 +315,14 @@ int msSLDApplySLD(mapObj *map, char *psSLDXML, int iLayer, char *pszStyleLayerNa
           }
           if (pasLayers[j].labelitem) {
             if (GET_LAYER(map, i)->labelitem)
-              free(GET_LAYER(map, i)->labelitem);
+              msFree(GET_LAYER(map, i)->labelitem);
 
             GET_LAYER(map, i)->labelitem = msStrdup(pasLayers[j].labelitem);
           }
 
           if (pasLayers[j].classitem) {
             if (GET_LAYER(map, i)->classitem)
-              free(GET_LAYER(map, i)->classitem);
+              msFree(GET_LAYER(map, i)->classitem);
 
             GET_LAYER(map, i)->classitem = msStrdup(pasLayers[j].classitem);
           }
@@ -388,7 +388,7 @@ int msSLDApplySLD(mapObj *map, char *psSLDXML, int iLayer, char *pszStyleLayerNa
             FLTFreeFilterEncodingNode(psNode);
 
             if ( bFreeTemplate) {
-              free(GET_LAYER(map, i)->template);
+              msFree(GET_LAYER(map, i)->template);
               GET_LAYER(map, i)->template = NULL;
             }
 
@@ -1288,7 +1288,7 @@ int msSLDParseStroke(CPLXMLNode *psStroke, styleObj *psStyle,
           int nDash = 0, i;
           char **aszValues = NULL;
           int nMaxDash;
-          if(pszDashValue) free(pszDashValue); /* free previous if multiple stroke-dasharray attributes were found */
+          if(pszDashValue) msFree(pszDashValue); /* free previous if multiple stroke-dasharray attributes were found */
           pszDashValue =
             msStrdup(psCssParam->psChild->psNext->pszValue);
           aszValues = msStringSplit(pszDashValue, ' ', &nDash);
@@ -1334,7 +1334,7 @@ int msSLDParseStroke(CPLXMLNode *psStroke, styleObj *psStyle,
     msSLDParseGraphicFillOrStroke(psGraphicFill, pszDashValue, psStyle, map);
 
   if (pszDashValue)
-    free(pszDashValue);
+    msFree(pszDashValue);
 
   return MS_SUCCESS;
 }
@@ -2543,7 +2543,7 @@ int msSLDParseRasterSymbolizer(CPLXMLNode *psRoot, layerObj *psLayer)
 
                 if (psLayer->classitem &&
                     strcasecmp(psLayer->classitem, "[pixel]") != 0)
-                  free(psLayer->classitem);
+                  msFree(psLayer->classitem);
                 psLayer->classitem = msStrdup("[pixel]");
 
                 msLoadExpressionString(&psLayer->class[nClassId]->expression,
@@ -2603,7 +2603,7 @@ int msSLDParseRasterSymbolizer(CPLXMLNode *psRoot, layerObj *psLayer)
 
             if (psLayer->classitem &&
                 strcasecmp(psLayer->classitem, "[pixel]") != 0)
-              free(psLayer->classitem);
+              msFree(psLayer->classitem);
             psLayer->classitem = msStrdup("[pixel]");
 
             msLoadExpressionString(&psLayer->class[nClassId]->expression,
@@ -2692,7 +2692,7 @@ int msSLDParseRasterSymbolizer(CPLXMLNode *psRoot, layerObj *psLayer)
                     sColor.blue;
               if (psLayer->classitem &&
                   strcasecmp(psLayer->classitem, "[pixel]") != 0)
-                free(psLayer->classitem);
+                msFree(psLayer->classitem);
               psLayer->classitem = msStrdup("[pixel]");
               msLoadExpressionString(&psLayer->class[nClassId]->expression,
                                      szExpression);
@@ -2701,8 +2701,8 @@ int msSLDParseRasterSymbolizer(CPLXMLNode *psRoot, layerObj *psLayer)
           }
         }
       }
-      free(papszValues);
-      free(papszThresholds);
+      msFree(papszValues);
+      msFree(papszThresholds);
 
 
     } else {
@@ -2795,7 +2795,7 @@ int msSLDParseTextParams(CPLXMLNode *psRoot, layerObj *psLayer,
     if (pszClassText) { /* pszItem) */
 
       msLoadExpressionString(&psClass->text, pszClassText);
-      free(pszClassText);
+      msFree(pszClassText);
 
       /* font */
       psFont = CPLGetXMLNode(psRoot, "Font");
@@ -3187,7 +3187,7 @@ char *msSLDGenerateSLD(mapObj *map, int iLayer, const char *pszVersion)
     else
       snprintf(szTmp, sizeof(szTmp), "<StyledLayerDescriptor version=\"1.1.0\" xsi:schemaLocation=\"http://www.opengis.net/sld %s/sld/1.1.0/StyledLayerDescriptor.xsd\" xmlns=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:se=\"http://www.opengis.net/se\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n", schemalocation);
 
-    free(schemalocation);
+    msFree(schemalocation);
 
     pszSLD = msStringConcatenate(pszSLD, szTmp);
     if (iLayer < 0 || iLayer > map->numlayers -1) {
@@ -3195,14 +3195,14 @@ char *msSLDGenerateSLD(mapObj *map, int iLayer, const char *pszVersion)
         pszTmp = msSLDGenerateSLDLayer(GET_LAYER(map, i), sld_version);
         if (pszTmp) {
           pszSLD= msStringConcatenate(pszSLD, pszTmp);
-          free(pszTmp);
+          msFree(pszTmp);
         }
       }
     } else {
       pszTmp = msSLDGenerateSLDLayer(GET_LAYER(map, iLayer), sld_version);
       if (pszTmp) {
         pszSLD = msStringConcatenate(pszSLD, pszTmp);
-        free(pszTmp);
+        msFree(pszTmp);
       }
     }
     snprintf(szTmp, sizeof(szTmp), "%s", "</StyledLayerDescriptor>\n");
@@ -3414,7 +3414,7 @@ char *msSLDGetGraphicSLD(styleObj *psStyle, layerObj *psLayer,
             pszSLD = msStringConcatenate(pszSLD, szTmp);
 
             if (pszSymbolName)
-              free(pszSymbolName);
+              msFree(pszSymbolName);
           }
         } else
           bGenerateDefaultSymbol =1;
@@ -3625,7 +3625,7 @@ char *msSLDGenerateLineSLD(styleObj *psStyle, layerObj *psLayer, int nVersion)
 
     pszSLD = msStringConcatenate(pszSLD, szTmp);
 
-    free(pszGraphicSLD);
+    msFree(pszGraphicSLD);
     pszGraphicSLD = NULL;
   }
 
@@ -3758,7 +3758,7 @@ char *msSLDGeneratePolygonSLD(styleObj *psStyle, layerObj *psLayer, int nVersion
 
       pszSLD = msStringConcatenate(pszSLD, szTmp);
 
-      free(pszGraphicSLD);
+      msFree(pszGraphicSLD);
       pszGraphicSLD = NULL;
     }
 
@@ -3804,7 +3804,7 @@ char *msSLDGeneratePolygonSLD(styleObj *psStyle, layerObj *psLayer, int nVersion
         snprintf(szTmp, sizeof(szTmp), "</%sGraphicFill>\n",  sNameSpace);
         pszSLD = msStringConcatenate(pszSLD, szTmp);
 
-        free(pszGraphicSLD);
+        msFree(pszGraphicSLD);
         pszGraphicSLD = NULL;
       }
     }
@@ -3866,7 +3866,7 @@ char *msSLDGeneratePointSLD(styleObj *psStyle, layerObj *psLayer, int nVersion)
   pszGraphicSLD = msSLDGetGraphicSLD(psStyle, psLayer, 1, nVersion);
   if (pszGraphicSLD) {
     pszSLD = msStringConcatenate(pszSLD, pszGraphicSLD);
-    free(pszGraphicSLD);
+    msFree(pszGraphicSLD);
   }
 
   snprintf(szTmp, sizeof(szTmp), "</%sPointSymbolizer>\n",  sNameSpace);
@@ -4204,7 +4204,7 @@ char *msSLDGenerateSLDLayer(layerObj *psLayer, int nVersion)
 
         if (pszFilter) {
           pszFinalSLD = msStringConcatenate(pszFinalSLD, pszFilter);
-          free(pszFilter);
+          msFree(pszFilter);
         }
         /* -------------------------------------------------------------------- */
         /*      generate the min/max scale.                                     */
@@ -4260,7 +4260,7 @@ char *msSLDGenerateSLDLayer(layerObj *psLayer, int nVersion)
             pszSLD = msSLDGenerateLineSLD(psStyle, psLayer, nVersion);
             if (pszSLD) {
               pszFinalSLD = msStringConcatenate(pszFinalSLD, pszSLD);
-              free(pszSLD);
+              msFree(pszSLD);
             }
           }
 
@@ -4270,7 +4270,7 @@ char *msSLDGenerateSLDLayer(layerObj *psLayer, int nVersion)
             pszSLD = msSLDGeneratePolygonSLD(psStyle, psLayer, nVersion);
             if (pszSLD) {
               pszFinalSLD = msStringConcatenate(pszFinalSLD, pszSLD);
-              free(pszSLD);
+              msFree(pszSLD);
             }
           }
 
@@ -4280,7 +4280,7 @@ char *msSLDGenerateSLDLayer(layerObj *psLayer, int nVersion)
             pszSLD = msSLDGeneratePointSLD(psStyle, psLayer, nVersion);
             if (pszSLD) {
               pszFinalSLD = msStringConcatenate(pszFinalSLD, pszSLD);
-              free(pszSLD);
+              msFree(pszSLD);
             }
           }
 
@@ -4289,7 +4289,7 @@ char *msSLDGenerateSLDLayer(layerObj *psLayer, int nVersion)
         pszSLD = msSLDGenerateTextSLD(psLayer->class[i], psLayer, nVersion);
         if (pszSLD) {
           pszFinalSLD = msStringConcatenate(pszFinalSLD, pszSLD);
-          free(pszSLD);
+          msFree(pszSLD);
         }
         if (nVersion > OWS_1_0_0)
           snprintf(szTmp, sizeof(szTmp), "%s\n",  "</se:Rule>");
@@ -4848,9 +4848,9 @@ FilterEncodingNode *BuildExpressionTree(char *pszExpression,
         ((FEPropertyIsLike *)psNode->pOther)->pszSingleChar = msStrdup("#");
         ((FEPropertyIsLike *)psNode->pOther)->pszEscapeChar = msStrdup("!");
       }
-      free(pszComparionValue);
-      free(pszAttibuteName);
-      free(pszAttibuteValue);
+      msFree(pszComparionValue);
+      msFree(pszAttibuteName);
+      msFree(pszAttibuteValue);
     }
     return psNode;
 
@@ -4862,7 +4862,7 @@ FilterEncodingNode *BuildExpressionTree(char *pszExpression,
 
       psNode->eType = FILTER_NODE_TYPE_LOGICAL;
       psNode->pszValue = msStrdup(pszOperator);
-      free(pszOperator);
+      msFree(pszOperator);
 
       pszLeftExpression = msSLDGetLeftExpressionOfOperator(pszExpression);
       pszRightExpression = msSLDGetRightExpressionOfOperator(pszExpression);
@@ -4891,9 +4891,9 @@ FilterEncodingNode *BuildExpressionTree(char *pszExpression,
             psNode->psLeftNode->psRightNode->pszValue =
               msStrdup(pszAttibuteValue);
 
-            free(pszComparionValue);
-            free(pszAttibuteName);
-            free(pszAttibuteValue);
+            msFree(pszComparionValue);
+            msFree(pszAttibuteName);
+            msFree(pszAttibuteValue);
           }
         }
         if (pszRightExpression) {
@@ -4922,9 +4922,9 @@ FilterEncodingNode *BuildExpressionTree(char *pszExpression,
             psNode->psRightNode->psRightNode->pszValue =
               msStrdup(pszAttibuteValue);
 
-            free(pszComparionValue);
-            free(pszAttibuteName);
-            free(pszAttibuteValue);
+            msFree(pszComparionValue);
+            msFree(pszAttibuteName);
+            msFree(pszAttibuteValue);
           }
         }
       }
@@ -4962,14 +4962,14 @@ char *msSLDBuildFilterEncoding(FilterEncodingNode *psNode)
       pszTmp = msSLDBuildFilterEncoding(psNode->psLeftNode);
       if (pszTmp) {
         pszExpression = msStringConcatenate(pszExpression, pszTmp);
-        free(pszTmp);
+        msFree(pszTmp);
       }
     }
     if (psNode->psRightNode) {
       pszTmp = msSLDBuildFilterEncoding(psNode->psRightNode);
       if (pszTmp) {
         pszExpression = msStringConcatenate(pszExpression, pszTmp);
-        free(pszTmp);
+        msFree(pszTmp);
       }
     }
     snprintf(szTmp,  sizeof(szTmp), "</ogc:%s>", psNode->pszValue);
@@ -5008,7 +5008,7 @@ char *msSLDParseLogicalExpression(char *pszExpression, const char *pszWfsFilter)
 
       pszTmp = msStringConcatenate(pszTmp, "</ogc:Filter>\n");
 
-      free(pszFLTExpression);
+      msFree(pszFLTExpression);
       pszFLTExpression = pszTmp;
     }
 
@@ -5201,7 +5201,7 @@ char *msSLDGetFilter(classObj *psClass, const char *pszWfsFilter)
           snprintf(szBuffer, sizeof(szBuffer), "<ogc:Filter><ogc:PropertyIsLike wildCard=\"*\" singleChar=\".\" escape=\"\\\"><ogc:PropertyName>%s</ogc:PropertyName><ogc:Literal>%s</ogc:Literal></ogc:PropertyIsLike></ogc:Filter>\n",
                    psClass->layer->classitem, pszOgcFilter);
 
-        free(pszOgcFilter);
+        msFree(pszOgcFilter);
 
         pszFilter = msStrdup(szBuffer);
       }
