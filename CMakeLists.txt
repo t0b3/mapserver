@@ -16,8 +16,158 @@ include(CheckCSourceCompiles)
 
 
 set (MapServer_VERSION_MAJOR 7)
-set (MapServer_VERSION_MINOR 1)
-set (MapServer_VERSION_REVISION 0)
+set (MapServer_VERSION_MINOR 0)
+set (MapServer_VERSION_SUFFIX "")
+set (MapServer_VERSION_SUFFIX "")
+
+set(TARGET_VERSION_MAJOR ${MapServer_VERSION_MAJOR})
+set(TARGET_VERSION_MINOR ${MapServer_VERSION_MINOR})
+
+MATH(EXPR MapServer_IS_DEV_VERSION "${MapServer_VERSION_MINOR}%2")
+if(MapServer_IS_DEV_VERSION)
+  set (MapServer_VERSION_STRING "${MapServer_VERSION_MAJOR}.${MapServer_VERSION_MINOR}-dev")
+else(MapServer_IS_DEV_VERSION)
+  set (MapServer_VERSION_STRING "${MapServer_VERSION_MAJOR}.${MapServer_VERSION_MINOR}.${MapServer_VERSION_REVISION}")
+  set (MapServer_VERSION_STRING "${MapServer_VERSION_STRING}${MapServer_VERSION_SUFFIX}")
+endif(MapServer_IS_DEV_VERSION)
+MATH(EXPR MapServer_VERSION_NUM "${MapServer_VERSION_MAJOR}*10000+${MapServer_VERSION_MINOR}*100+${MapServer_VERSION_REVISION}")
+
+SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
+if (APPLE)
+  set(CMAKE_FIND_FRAMEWORK "LAST")
+endif (APPLE)
+
+# Offer the user the choice of overriding the installation directories
+set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
+set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
+set(INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header files")
+if(WIN32 AND NOT CYGWIN)
+  set(DEF_INSTALL_CMAKE_DIR CMake)
+else()
+  set(DEF_INSTALL_CMAKE_DIR share/mapserver/cmake)
+endif()
+set(INSTALL_CMAKE_DIR ${DEF_INSTALL_CMAKE_DIR} CACHE PATH "Installation directory for CMake files")
+
+# Make relative paths absolute (needed later on)
+foreach(p LIB BIN INCLUDE CMAKE)
+  set(var INSTALL_${p}_DIR)
+  if(NOT IS_ABSOLUTE "${${var}}")
+    set(${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
+  endif()
+endforeach()
+
+macro (ms_link_libraries)
+  if(BUILD_DYNAMIC)
+    target_link_libraries(mapserver ${ARGV})
+  endif(BUILD_DYNAMIC)
+  if(BUILD_STATIC)
+    target_link_libraries(mapserver_static ${ARGV})
+  endif(BUILD_STATIC)
+endmacro()
+
+macro( report_optional_not_found component )
+  message(SEND_ERROR "${component} library/component/dependency could not be found.
+  HINTS:
+  - disable ${component} support by adding -DWITH_${component}=0
+  - add the ${component} install directory to the CMAKE_PREFIX_PATH variable (-DCMAKE_PREFIX_PATH=\"/path/to/${component}-install-dir;/path/to/other/dirs\"")
+endmacro()
+macro( report_mandatory_not_found component )
+  message(SEND_ERROR "${component} library/component could not be found and is a mandatory dependency
+  HINT:
+  - add the ${component} install directory to the CMAKE_PREFIX_PATH variable (-DCMAKE_PREFIX_PATH=\"/path/to/${component}-install-dir;/path/to/other/dirs\"")
+endmacro()
+macro( report_dependency_error component dependency)
+  message(SEND_ERROR "${component} support requires ${dependency} support, however ${dependency} support has been disabled.
+  HINTS:
+  - re-run with -DWITH_${dependency}=1 (or without -DWITH_${dependency}=0)
+  - disable ${component} support by adding -DWITH_${component}=0"
+  )
+endmacro()
+
+SET(CMAKE_REQUIRED_INCLUDES "math.h")
+if(NOT(WIN32))
+SET(CMAKE_REQUIRED_LIBRARIES "m")
+endif(NOT(WIN32))
+
+check_function_exists("strrstr"          HAVE_STRRSTR)
+check_function_exists("strcasecmp"  HAVE_STRCASECMP)
+check_function_exists("strcasestr"  HAVE_STRCASESTR)
+check_function_exists("strdup"  HAVE_STRDUP)
+check_function_exists("strlcat"  HAVE_STRLCAT)
+check_function_exists("strlcpy"  HAVE_STRLCPY)
+check_function_exists("strlen"  HAVE_STRLEN)
+check_function_exists("strncasecmp"  HAVE_STRNCASECMP)
+check_function_exists("vsnprintf"  HAVE_VSNPRINTF)
+check_function_exists("lrintf" HAVE_LRINTF)
+check_function_exists("lrint" HAVE_LRINT)
+
+check_include_file(dlfcn.h HAVE_DLFCN_H)
+
+
+check_c_source_compiles("
+int main(int argc, char **argv) {
+   long x=0,y=0;
+   for(x=0;x<5;x++) {
+     if(y>1) break;
+     y=__sync_fetch_and_add(&x,1);
+   }
+}" HAVE_SYNC_FETCH_AND_ADD)
+
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
+#options suported by the cmake builder
+option(WITH_PROJ "Choose if reprojection support should be built in" ON)
+option(WITH_KML "Enable native KML output support (requires libxml2 support)" OFF)
+option(WITH_SOS "Enable SOS Server support (requires PROJ and libxml2 support)" OFF)
+option(WITH_WMS "Enable WMS Server support (requires proj support)" ON)
+option(WITH_FRIBIDI "Choose if FriBidi glyph shaping support should be built in (usefull for right-to-left languages) (requires HARFBUZZ)" ON)
+option(WITH_HARFBUZZ "Choose if Harfbuzz complex text layout should be included (needed for e.g. arabic and hindi) (requires FRIBIDI)" ON)
+option(WITH_ICONV "Choose if Iconv Internationalization support should be built in" ON)
+option(WITH_CAIRO "Choose if CAIRO  rendering support should be built in (required for SVG and PDF output)" ON)
+option(WITH_SVGCAIRO "Choose if SVG symbology support (via libsvgcairo) should be built in (requires cairo, libsvg, libsvg-cairo. Incompatible with librsvg)" OFF)
+option(WITH_RSVG "Choose if SVG symbology support (via librsvg) should be built in (requires cairo, librsvg. Incompatible with libsvg-cairo)" OFF)
+option(WITH_MYSQL "Choose if MYSQL joining support should be built in" OFF)
+option(WITH_FCGI "Choose if FastCGI support should be built in" ON)
+option(WITH_GEOS "Choose if GEOS geometry operations support should be built in" ON)
+option(WITH_POSTGIS "Choose if Postgis input support should be built in" ON)
+option(WITH_GDAL "Choose if GDAL input raster support should be built in" ON)
+option(WITH_OGR "Choose if OGR/GDAL input vector support should be built in" ON)
+option(WITH_CLIENT_WMS "Enable Client WMS Layer support (requires CURL and GDAL support)" OFF)
+option(WITH_CLIENT_WFS "Enable Client WMS Layer support (requires CURL and OGR support)" OFF)
+option(WITH_CURL "Enable Curl HTTP support (required for wms/wfs client, and remote SLD)" OFF)
+option(WITH_WFS "Enable WFS Server support (requires PROJ and OGR support)" ON)
+option(WITH_WCS "Enable WCS Server support (requires PROJ and GDAL support)" ON)
+option(WITH_LIBXML2 "Choose if libxml2 support should be built in (used for sos, wcs 1.1,2.0 and wfs 1.1)" ON)
+option(WITH_THREAD_SAFETY "Choose if a thread-safe version of libmapserver should be built (only recommended for some mapscripts)" OFF)
+option(WITH_GIF "Enable GIF support (for PIXMAP loading)" ON)
+option(WITH_PYTHON "Enable Python mapscript support" OFF)
+option(WITH_PHP "Enable PHP mapscript support" OFF)
+option(WITH_PERL "Enable Perl mapscript support" OFF)
+option(WITH_RUBY "Enable Ruby mapscript support" OFF)
+option(WITH_JAVA "Enable Java mapscript support" OFF)
+option(WITH_CSHARP "Enable C# mapscript support" OFF)
+option(WITH_POINT_Z_M "include Z and M coordinates in point structure (advanced, not recommended)" OFF)
+option(WITH_ORACLESPATIAL "include oracle spatial database input support" OFF)
+option(WITH_ORACLE_PLUGIN "include oracle spatial database input support as plugin" OFF)
+option(WITH_MSSQL2008 "include mssql 2008 database input support as plugin" OFF)
+option(WITH_EXEMPI "include xmp output metadata support" OFF)
+option(WITH_XMLMAPFILE "include native xml mapfile support (requires libxslt/libexslt)" OFF)
+option(WITH_V8 "include javacript v8 scripting" OFF)
+option(WITH_PIXMAN "use (experimental) support for pixman for layer compositing operations" OFF)
+
+option(BUILD_STATIC "Also build a static version of mapserver" OFF)
+option(LINK_STATIC_LIBMAPSERVER "Link to static version of libmapserver (also for mapscripts)" OFF)
+option(WITH_APACHE_MODULE "include (experimental) support for apache module" OFF)
+option(WITH_GENERIC_NINT "generic rounding" OFF)
+
+#TODO: USE_OGL? , USE_SDE, USE_CLUSTER_EXTERNAL USE_CLUSTER_PLUGIN, USE_MSSQL2008, USE_MSSQL2008_PLUGIN
+# SIGNORE_MISSING_DATA, CGI_CL_DEBUG_ARGS, EXTRA DEBUG FLAGS?,
+# PERLV_ld_DETECT?
+
+# Add compiler flags for warnings
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wdeclaration-after-statement")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 set (MapServer_VERSION_SUFFIX "")
 
 set(TARGET_VERSION_MAJOR ${MapServer_VERSION_MAJOR})
