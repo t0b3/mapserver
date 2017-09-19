@@ -2019,7 +2019,7 @@ int msOracleSpatialLayerWhichShapes( layerObj *layer, rectObj rect, int isQuery)
   /* define SQL query */
   for( i=0; i < layer->numitems; ++i ) {
       
-      snprintf( query_str + strlen(query_str), sizeof(query_str)-strlen(query_str), "%s, ", layer->items[i] );
+      snprintf( query_str + strlen(query_str), sizeof(query_str)-strlen(query_str), "\"%s\", ", layer->items[i] );
   }
 
   /*we add the uniqueid if it was not part of the current item list*/
@@ -3956,7 +3956,7 @@ PluginInitializeVirtualTable(layerVTableObj* vtable, layerObj *layer)
   assert(layer != NULL);
   assert(vtable != NULL);
 
-  layer->vtable->LayerTranslateFilter = msOracleSpatialLayerTranslateFilter;
+  vtable->LayerTranslateFilter = msOracleSpatialLayerTranslateFilter;
 
 
   vtable->LayerInitItemInfo = msOracleSpatialLayerInitItemInfo;
