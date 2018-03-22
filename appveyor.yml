@@ -12,7 +12,6 @@ environment:
 shallow_clone: true
 
 build_script:
-  - echo build_script
   - if "%platform%" == "x64" SET VS_FULL=%VS_VERSION% Win64
   - if "%platform%" == "x86" SET VS_FULL=%VS_VERSION%
   - if "%platform%" == "x86" SET SDK=release-1911
@@ -48,15 +47,15 @@ build_script:
   - cmake --build . --config Release
 
 before_test:
-  - "%PYTHON_EXECUTABLE%" -m pip install --upgrade pip
+  - "%PYTHON_EXECUTABLE% -m pip install --upgrade pip"
   - cd %APPVEYOR_BUILD_FOLDER%\mapscript\python
-  - "%PYTHON_EXECUTABLE%" -m pip install -r requirements-dev.txt
+  - "%PYTHON_EXECUTABLE% -m pip install -r requirements-dev.txt"
 
 test_script:
   - set PATH=%APPVEYOR_BUILD_FOLDER%\build\Release;%APPVEYOR_BUILD_FOLDER%\sdk\%SDK%\bin;%PATH%
   - set PROJ_LIB=%APPVEYOR_BUILD_FOLDER%\sdk\%SDK%\bin\proj\SHARE
   - set PYTHONPATH=%APPVEYOR_BUILD_FOLDER%\build\mapscript\python\Release;%APPVEYOR_BUILD_FOLDER%\build\mapscript\python
   - cd %APPVEYOR_BUILD_FOLDER%\mapscript\python
-  - "%PYTHON_EXECUTABLE%" -m pytest --ignore=tests/cases/fonttest.py --ignore=tests/cases/hashtest.py --ignore=tests/cases/pgtest.py --ignore=tests/cases/threadtest.py tests/cases
+  - "%PYTHON_EXECUTABLE% -m pytest --ignore=tests/cases/fonttest.py --ignore=tests/cases/hashtest.py --ignore=tests/cases/pgtest.py --ignore=tests/cases/threadtest.py tests/cases"
 
 deploy: off
