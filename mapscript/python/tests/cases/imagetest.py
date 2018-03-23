@@ -43,8 +43,9 @@ from testing import TESTMAPFILE
 from testing import MapTestCase
 
 PY2 = sys.version_info[0] < 3
+
 if PY2:
-    import cStringIO as BytesIO 
+    import cStringIO.StringIO as BytesIO 
 else:
 	from io import BytesIO
 
