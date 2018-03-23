@@ -28,7 +28,7 @@
 #
 # Execute this module as a script from mapserver/mapscript/python
 #
-#     python tests/cases/clonetest.py -v
+#     python tests/cases/imagetest.py -v
 #
 # ===========================================================================
 
@@ -41,8 +41,14 @@ from testing import mapscript
 from testing import TEST_IMAGE as test_image
 from testing import TESTMAPFILE
 from testing import MapTestCase
-from StringIO import StringIO
-import cStringIO
+
+PY2 = sys.version_info[0] < 3
+if PY2:
+    import cStringIO as BytesIO 
+else:
+	from io import BytesIO
+
+
 import urllib
 
 
@@ -116,11 +122,11 @@ class ImageObjTestCase(unittest.TestCase):
         assert imgobj.width == 200
     
     def xtestConstructorStringIO(self):
-        """imageObj with a cStringIO works"""
+        """imageObj with a BytesIO works"""
         f = open(test_image, 'rb')
         data = f.read()
         f.close()
-        s = cStringIO.StringIO(data)
+        s = BytesIO(data)
         imgobj = mapscript.imageObj(s)
         assert imgobj.thisown == 1
         assert imgobj.height == 200
@@ -142,7 +148,7 @@ class ImageWriteTestCase(MapTestCase):
         image = self.map.draw()
         assert image.thisown == 1
         filename = 'testImageWrite.png'
-        fh = open(filename, 'wb')
+        fh = open(filename, 'w')
         image.write(fh)
         fh.close()
         if have_image:
@@ -153,15 +159,15 @@ class ImageWriteTestCase(MapTestCase):
         else:
             assert 1
 
-    def testImageWriteStringIO(self):
-        """image writes data to a StringIO instance"""
+    def testImageWriteBytesIO(self):
+        """image writes data to a BytesIO instance"""
         image = self.map.draw()
         assert image.thisown == 1
         
-        s = cStringIO.StringIO()
+        s = BytesIO()
         image.write(s)
 
-        filename = 'testImageWriteStringIO.png'
+        filename = 'testImageWriteBytesIO.png'
         fh = open(filename, 'wb')
         fh.write(s.getvalue())
         fh.close()
@@ -178,7 +184,7 @@ class ImageWriteTestCase(MapTestCase):
         image = self.map.draw()
         assert image.thisown == 1
          
-        s = cStringIO.StringIO(image.getBytes())
+        s = BytesIO(image.getBytes())
         
         filename = 'testImageGetBytes.png'
         fh = open(filename, 'wb')

@@ -96,9 +96,9 @@ class MapLayersTestCase(MapTestCase):
         n = self.map.numlayers
         layer = mapscript.layerObj()
         layer.name = 'new'
-	assert layer.map == None, layer.map
+        assert layer.map == None, layer.map
         index = self.map.insertLayer(layer)
-	assert layer.map != None, layer.map
+        assert layer.map != None, layer.map
         assert index == n, index
         assert self.map.numlayers == n + 1
         names = [self.map.getLayer(i).name for i in range(self.map.numlayers)]
@@ -112,9 +112,9 @@ class MapLayersTestCase(MapTestCase):
         n = self.map.numlayers
         layer = mapscript.layerObj()
         layer.name = 'new'
-	assert layer.map == None, layer.map
+        assert layer.map == None, layer.map
         index = self.map.insertLayer(layer, 0)
-	assert layer.map != None, layer.map
+        assert layer.map != None, layer.map
         assert index == 0, index
         assert self.map.numlayers == n + 1
         names = [self.map.getLayer(i).name for i in range(self.map.numlayers)]
@@ -309,4 +309,3 @@ class MapSetWKTTestCase(MapTestCase):
 
 if __name__ == '__main__':
     unittest.main()
-    

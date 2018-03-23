@@ -83,10 +83,11 @@ class RectObjTestCase(MapPrimitivesTestCase):
 
     def testExceptionMessage(self):
         """test formatted error message"""
+		
         try:
             r = mapscript.rectObj(1.0, -2.0, -3.0, 4.0)
-        except mapscript.MapServerError, msg:
-            assert str(msg) == "rectObj(): Invalid rectangle. { 'minx': 1.000000 , 'miny': -2.000000 , 'maxx': -3.000000 , 'maxy': 4.000000 }", msg
+        except mapscript.MapServerError as ex:
+            assert str(ex) == "rectObj(): Invalid rectangle. { 'minx': 1.000000 , 'miny': -2.000000 , 'maxx': -3.000000 , 'maxy': 4.000000 }", str(ex)
 
     def testRect__str__(self):
         """__str__ returns properly formatted string"""

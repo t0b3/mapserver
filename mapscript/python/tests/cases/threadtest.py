@@ -51,7 +51,7 @@ def trigger_exception(name):
     mo = mapscript.mapObj(TESTMAPFILE)
     try:
         mo.setExtent(1, 50, -1, 51)
-        raise Exception, "We expected a MapServer exception"
+        raise Exception("We expected a MapServer exception")
     except mapscript.MapServerError:
         pass
 

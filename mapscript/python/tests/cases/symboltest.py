@@ -34,7 +34,13 @@
 
 import os, sys
 import unittest
-import StringIO
+
+PY2 = sys.version_info[0] < 3
+if PY2:
+    import StringIO
+else:
+	from io import StringIO
+
 
 # the testing module helps us import the pre-installed mapscript
 from testing import mapscript, MapTestCase
@@ -175,4 +181,3 @@ class MapSymbolTestCase(MapTestCase):
 
 if __name__ == '__main__':
     unittest.main()
-    
