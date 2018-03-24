@@ -5,6 +5,8 @@ php:
   - 5.6
 
 env:
+  - PYTHON_EXECUTABLE=python
+  - PIP_EXECUTABLE=pip
   global:
 # Encrypted private key of the deploy key of the github.com/mapserver/coverage.git repository
      - secure: "B1Tt18Q4F82+cXlj4fBoZDiyWbXLuzpJD6jt828qiS/i9ws8IEqYF7x3V4fo\nAnO1pZ84hdIOEfcSj2tFnysCPZ+zpOPzN2ma7iVEgmFTPNXf8pSx8CTXtiI/\nohUEcnARRCyuCK7cjEP5m4iWGazI+Pc563X4g67ToRPkLhIdrEg="
@@ -64,10 +66,17 @@ before_install:
   - cd ..
   - touch maplexer.l
   - touch mapparser.y
-
+composer
 
 script:
   - make -j4 test
+  - "$PYTHON_EXECUTABLE -m $PIP_EXECUTABLE install --upgrade pip"
+  - cd $TRAVIS_BUILD_DIR\mapscript\python
+  - "$PYTHON_EXECUTABLE% -m $PIP_EXECUTABLE install -r requirements-dev.txt"
+  - export PYTHONPATH=$TRAVIS_BUILD_DIR\build\mapscript\python\Release;$TRAVIS_BUILD_DIR\build\mapscript\python
+  - cd $TRAVIS_BUILD_DIR/mapscript/python/tests/cases
+  - "%PYTHON_EXECUTABLE% -m pytest --ignore=fonttest.py --ignore=hashtest.py --ignore=pgtest.py --ignore=threadtest.py ."
+
 
 after_success:
 # Only run coverage when it is safe to do so (not on pull requests), and only on master branch
