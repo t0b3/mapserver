@@ -5,10 +5,10 @@ php:
   - 5.6
 
 env:
-  - PYTHON_EXECUTABLE=python
-  - PIP_EXECUTABLE=pip
   global:
-# Encrypted private key of the deploy key of the github.com/mapserver/coverage.git repository
+     - PYTHON_EXECUTABLE=python
+     - PIP_EXECUTABLE=pip
+     # Encrypted private key of the deploy key of the github.com/mapserver/coverage.git repository
      - secure: "B1Tt18Q4F82+cXlj4fBoZDiyWbXLuzpJD6jt828qiS/i9ws8IEqYF7x3V4fo\nAnO1pZ84hdIOEfcSj2tFnysCPZ+zpOPzN2ma7iVEgmFTPNXf8pSx8CTXtiI/\nohUEcnARRCyuCK7cjEP5m4iWGazI+Pc563X4g67ToRPkLhIdrEg="
      - secure: "OvxCriM3Dwa0wkZ+nQL8e6nuMrG2hrfET+QEPRps/fPSGSR+yRWo04hBqRn2\niBTJGpi0JvaTN0pxjCx2I/+4jbzkNt+J6IqSz2KTUzseiWA3tyAN8uel6fIo\nkS90UJ7OeKUuYkvzfVwYn6pxM6b+CN6+DTs0dlWgxyMg/AtVdz8="
      - secure: "Vcf+jOzNtXapBf8qfM8N0ZTarQ9B7qqvG8X8fLJP5M2uDO2BrruMIZPpxwcL\nGMBkkZZGuofeqOs+BNxwnO1l4YOC+JUzQGQnExbEi02QDVzdR4+3sUvruXtL\nU/ppXvjghchgqvVp8QMjiVkUG1Ja1qwwCDM0GSN/PTfBy+Pjav0="
@@ -66,7 +66,6 @@ before_install:
   - cd ..
   - touch maplexer.l
   - touch mapparser.y
-composer
 
 script:
   - make -j4 test
