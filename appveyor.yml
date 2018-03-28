@@ -45,14 +45,13 @@ build_script:
   - set SDK_URL=http://download.gisinternals.com/sdk/downloads/%SDK_ZIP%
   - echo "%SDK_ZIP%"
   - echo "%SDK_URL%"
-
   - if not exist sdk (
-        mkdir sdk
-        cd sdk
-        appveyor DownloadFile "%SDK_URL%"
+        mkdir sdk &&
+        cd sdk &&
+        appveyor DownloadFile "%SDK_URL%" &&
         7z x "%SDK_ZIP%" > nul
     ) else (
-        echo "%SDK_URL% already downloaded"
+        echo "%SDK_URL% already downloaded" &&
         cd sdk
     )
   - cd %SDK%
