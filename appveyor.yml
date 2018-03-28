@@ -49,8 +49,7 @@ build_script:
         mkdir sdk &&
         cd sdk &&
         appveyor DownloadFile "%SDK_URL%" &&
-        7z x "%SDK_ZIP%" > nul
-    ) else (
+        7z x "%SDK_ZIP%" > nul) else (
         echo "%SDK_URL% already downloaded" &&
         cd sdk
     )
@@ -65,7 +64,7 @@ build_script:
   - set SDK_BIN=%ROOT_FOLDER%\\sdk\\%SDK%\\bin
   - set SWIG_EXECUTABLE=%ROOT_FOLDER%\\sdk\\SWIG-1.3.39\\swig.exe
   - set REGEX_DIR=%ROOT_FOLDER%\\sdk\\regex-0.12
-  - SET PYTHON_EXECUTABLE=%PYTHON_EXECUTABLE%\\python.exe
+  - SET PYTHON_EXECUTABLE=%PYTHON%\\python.exe
   - mkdir build
   - cd build
   - cmake -G "%VS_FULL%" .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=%SDK_PREFIX% -DFREETYPE_INCLUDE_DIR_freetype2=%SDK_INC%\\freetype 
