@@ -50,8 +50,8 @@ build_script:
         cd sdk &&
         appveyor DownloadFile "%SDK_URL%" &&
         7z x "%SDK_ZIP%" > nul) else (
-        echo "%SDK_URL% already downloaded"
-        && cd sdk
+        echo "%SDK_URL% already downloaded" &&
+        cd sdk
         )
   - cd %SDK%
   - set SWIG_VERSION=swigwin-3.0.12
