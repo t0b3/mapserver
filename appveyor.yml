@@ -69,7 +69,7 @@ build_script:
   - set SDK_INC=%ROOT_FOLDER%\\sdk\\%SDK%\\include
   - set SDK_LIB=%ROOT_FOLDER%\\sdk\\%SDK%\\lib
   - set SDK_BIN=%ROOT_FOLDER%\\sdk\\%SDK%\\bin
-  - set SWIG_EXECUTABLE=%ROOT_FOLDER%\\sdk\\%SWIG_VERSION%\\swig.exe
+  - set SWIG_EXECUTABLE=%ROOT_FOLDER%\\%SWIG_VERSION%\\swig.exe
   - set REGEX_DIR=%ROOT_FOLDER%\\sdk\\regex-0.12
   - SET PYTHON_EXECUTABLE=%PYTHON%\\python.exe
   - mkdir build
