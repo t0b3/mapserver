@@ -4,6 +4,7 @@ environment:
   global:
     # VS 2017
     VS_VERSION: Visual Studio 15 2017
+    SWIG_VERSION: swigwin-3.0.12
 
   matrix:
     - platform: x86 
@@ -32,6 +33,7 @@ shallow_clone: true
 cache:
   - sdk
   - '%LOCALAPPDATA%\pip\Cache'
+  - '%SWIG_VERSION%'
 
 build_script:
   - if "%platform%" == "x64" SET VS_FULL=%VS_VERSION% Win64
@@ -41,6 +43,10 @@ build_script:
   - if "%platform%" == "x64" call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"
   - if "%platform%" == "x86" call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat"
   - echo "%VS_FULL%"
+  - if not exist %SWIG_VERSION% (  
+        appveyor DownloadFile http://prdownloads.sourceforge.net/swig/%SWIG_VERSION%.zip &&
+        7z x "%SWIG_VERSION%.zip" > nul
+    )
   - set SDK_ZIP=%SDK%-dev.zip
   - set SDK_URL=http://download.gisinternals.com/sdk/downloads/%SDK_ZIP%
   - echo "%SDK_ZIP%"
@@ -54,10 +60,7 @@ build_script:
         cd sdk
         )
   - cd %SDK%
-  - set SWIG_VERSION=swigwin-3.0.12
-  - appveyor DownloadFile http://prdownloads.sourceforge.net/swig/%SWIG_VERSION%.zip
-  - 7z x "%SWIG_VERSION%.zip" > nul
-  - dir
+
   - cd lib
   - copy libpng.lib libpng.lib.lib
   - set ROOT_FOLDER=%APPVEYOR_BUILD_FOLDER:\=\\%
@@ -66,7 +69,7 @@ build_script:
   - set SDK_INC=%ROOT_FOLDER%\\sdk\\%SDK%\\include
   - set SDK_LIB=%ROOT_FOLDER%\\sdk\\%SDK%\\lib
   - set SDK_BIN=%ROOT_FOLDER%\\sdk\\%SDK%\\bin
-  - set SWIG_EXECUTABLE=%ROOT_FOLDER%\\%SWIG_VERSION%\\swig.exe
+  - set SWIG_EXECUTABLE=%ROOT_FOLDER%\\sdk\\%SWIG_VERSION%\\swig.exe
   - set REGEX_DIR=%ROOT_FOLDER%\\sdk\\regex-0.12
   - SET PYTHON_EXECUTABLE=%PYTHON%\\python.exe
   - mkdir build
