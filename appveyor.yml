@@ -45,15 +45,17 @@ build_script:
   - set SDK_URL=http://download.gisinternals.com/sdk/downloads/%SDK_ZIP%
   - echo "%SDK_ZIP%"
   - echo "%SDK_URL%"
-  - dir
   - if not exist sdk (
         mkdir sdk &&
         cd sdk &&
         appveyor DownloadFile "%SDK_URL%" &&
         7z x "%SDK_ZIP%" > nul) else (
-        echo "%SDK_URL% already downloaded" &&
-        cd sdk)
+        echo "%SDK_URL% already downloaded")
   - cd %SDK%
+  - set SWIG_VERSION=swigwin-3.0.12
+  - appveyor DownloadFile http://prdownloads.sourceforge.net/swig/%SWIG_VERSION%.zip
+  - 7z x "%SWIG_VERSION%.zip" > nul
+  - dir
   - cd lib
   - copy libpng.lib libpng.lib.lib
   - set ROOT_FOLDER=%APPVEYOR_BUILD_FOLDER:\=\\%
@@ -62,7 +64,7 @@ build_script:
   - set SDK_INC=%ROOT_FOLDER%\\sdk\\%SDK%\\include
   - set SDK_LIB=%ROOT_FOLDER%\\sdk\\%SDK%\\lib
   - set SDK_BIN=%ROOT_FOLDER%\\sdk\\%SDK%\\bin
-  - set SWIG_EXECUTABLE=%ROOT_FOLDER%\\sdk\\SWIG-1.3.39\\swig.exe
+  - set SWIG_EXECUTABLE=%ROOT_FOLDER%\\%SWIG_VERSION%\\swig.exe
   - set REGEX_DIR=%ROOT_FOLDER%\\sdk\\regex-0.12
   - SET PYTHON_EXECUTABLE=%PYTHON%\\python.exe
   - mkdir build
