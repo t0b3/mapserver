@@ -81,8 +81,8 @@
   }
 %}
 
-%typemap(imtype, inattributes="[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]", 
-  outattributes="[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]") 
+%typemap(imtype, inattributes="[System.Runtime.InteropServices.MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]", 
+  outattributes="[return: System.Runtime.InteropServices.MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]") 
   char *, char *&, char[ANY], char[]   "string"
 
 %typemap(csout, excode=SWIGEXCODE) SWIGTYPE {

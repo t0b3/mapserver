@@ -127,9 +127,9 @@ inner exceptions. Otherwise the exception message will be concatenated*/
  
 %pragma(csharp) imclasscode=%{
   public class StringArrayMarshal : IDisposable {
-    public readonly IntPtr[] _ar;
+    public readonly System.IntPtr[] _ar;
     public StringArrayMarshal(string[] ar) {
-      _ar = new IntPtr[ar.Length];
+      _ar = new System.IntPtr[ar.Length];
       for (int cx = 0; cx < _ar.Length; cx++) {
 	      _ar[cx] = System.Runtime.InteropServices.Marshal.StringToHGlobalAnsi(ar[cx]);
       }
