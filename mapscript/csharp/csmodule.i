@@ -126,7 +126,7 @@ inner exceptions. Otherwise the exception message will be concatenated*/
  *****************************************************************************/
  
 %pragma(csharp) imclasscode=%{
-  public class StringArrayMarshal : IDisposable {
+  public class StringArrayMarshal : System.IDisposable {
     public readonly System.IntPtr[] _ar;
     public StringArrayMarshal(string[] ar) {
       _ar = new System.IntPtr[ar.Length];
@@ -313,7 +313,7 @@ static SWIG_CSharpByteArrayHelperCallback SWIG_csharp_bytearray_callback = NULL;
 %csmethodmodifiers processLegendTemplate "private";
 %csmethodmodifiers processQueryTemplate "private";
 
-%typemap(csinterfaces) mapObj "IDisposable, System.Runtime.Serialization.ISerializable"; 
+%typemap(csinterfaces) mapObj "System.IDisposable, System.Runtime.Serialization.ISerializable"; 
 %typemap(csattributes) mapObj  "[Serializable]"
 %typemap(cscode) mapObj, struct mapObj %{  
   public string processTemplate(int bGenerateImages, string[] names, string[] values)
@@ -378,7 +378,7 @@ static SWIG_CSharpByteArrayHelperCallback SWIG_csharp_bytearray_callback = NULL;
 		public delegate void SWIGByteArrayDelegate(System.IntPtr data, int size);
 		static SWIGByteArrayDelegate bytearrayDelegate = new SWIGByteArrayDelegate(CreateByteArray);
 
-		[DllImport("$dllimport", EntryPoint="SWIGRegisterByteArrayCallback_$module")]
+		[System.Runtime.InteropServices.DllImport("$dllimport", System.Runtime.InteropServices.EntryPoint="SWIGRegisterByteArrayCallback_$module")]
 		public static extern void SWIGRegisterByteArrayCallback_mapscript(SWIGByteArrayDelegate bytearrayDelegate);
 
 		static void CreateByteArray(System.IntPtr data, int size)

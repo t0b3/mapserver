@@ -34,7 +34,7 @@
   static $imclassname() {
   }
 
-  public class UTF8Marshaler : ICustomMarshaler {
+  public class UTF8Marshaler : System.Runtime.InteropServices.ICustomMarshaler {
     static UTF8Marshaler static_instance;
 
     public System.IntPtr MarshalManagedToNative(object managedObj) {
@@ -72,7 +72,7 @@
         return -1;
     }
 
-    public static ICustomMarshaler GetInstance(string cookie) {
+    public static System.Runtime.InteropServices.ICustomMarshaler GetInstance(string cookie) {
         if (static_instance == null) {
             return static_instance = new UTF8Marshaler();
         }
@@ -81,8 +81,8 @@
   }
 %}
 
-%typemap(imtype, inattributes="[System.Runtime.InteropServices.MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]", 
-  outattributes="[return: System.Runtime.InteropServices.MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]") 
+%typemap(imtype, inattributes="[System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]", 
+  outattributes="[return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]") 
   char *, char *&, char[ANY], char[]   "string"
 
 %typemap(csout, excode=SWIGEXCODE) SWIGTYPE {
@@ -267,7 +267,7 @@
 
 %pragma(csharp) modulecode=%{
   /* %pragma(csharp) modulecode */
-  internal class $moduleObject : IDisposable {
+  internal class $moduleObject : System.IDisposable {
 	public virtual void Dispose() {
       
     }
@@ -276,7 +276,7 @@
   protected static object ThisOwn_true() { return null; }
   protected static object ThisOwn_false() { return the$moduleObject; }
   
-  [DllImport("$dllimport", EntryPoint="SetEnvironmentVariable")]
+  [System.Runtime.InteropServices.DllImport("$dllimport", System.Runtime.InteropServices.EntryPoint="SetEnvironmentVariable")]
   public static extern int SetEnvironmentVariable(string envstring);
 %}
 
