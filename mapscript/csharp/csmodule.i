@@ -143,7 +143,7 @@ inner exceptions. Otherwise the exception message will be concatenated*/
   }
 %}
 
-%typemap(imtype, out="IntPtr") char** "IntPtr[]"
+%typemap(imtype, out="System.IntPtr") char** "System.IntPtr[]"
 %typemap(cstype) char** %{string[]%}
 %typemap(in) char** %{ $1 = ($1_ltype)$input; %}
 %typemap(out) char** %{ $result = $1; %}
@@ -191,7 +191,7 @@ inner exceptions. Otherwise the exception message will be concatenated*/
  *****************************************************************************/
 
 %typemap(ctype) outputFormatObj** "void*"
-%typemap(imtype) outputFormatObj** "IntPtr"
+%typemap(imtype) outputFormatObj** "System.IntPtr"
 %typemap(cstype) outputFormatObj** "outputFormatObj[]"
 %typemap(out) outputFormatObj** %{ $result = $1; %}
 %typemap(csout, excode=SWIGEXCODE) outputFormatObj** {
@@ -241,8 +241,8 @@ static SWIG_CSharpByteArrayHelperCallback SWIG_csharp_bytearray_callback = NULL;
 %typemap(in) SWIG_CSharpByteArrayHelperCallback %{ $1 = ($1_ltype)$input; %}
 %typemap(csin) SWIG_CSharpByteArrayHelperCallback "$csinput"
 
-%typemap(imtype) (unsigned char* pixels) "IntPtr"
-%typemap(cstype) (unsigned char* pixels) "IntPtr"
+%typemap(imtype) (unsigned char* pixels) "System.IntPtr"
+%typemap(cstype) (unsigned char* pixels) "System.IntPtr"
 %typemap(in) (unsigned char* pixels) %{ $1 = ($1_ltype)$input; %}
 %typemap(csin) (unsigned char* pixels) "$csinput"
 
@@ -418,7 +418,7 @@ DllExport void SWIGSTDCALL SWIGRegisterByteArrayCallback_$module(SWIG_CSharpByte
 %}
 
 /* Typemaps for pattern array */
-%typemap(imtype) (double pattern[ANY]) "IntPtr"
+%typemap(imtype) (double pattern[ANY]) "System.IntPtr"
 %typemap(cstype) (double pattern[ANY]) "double[]"
 %typemap(in) (double pattern[ANY]) %{ $1 = ($1_ltype)$input; %}
 %typemap(csin) (double pattern[ANY]) "$csinput"
@@ -444,14 +444,14 @@ DllExport void SWIGSTDCALL SWIGRegisterByteArrayCallback_$module(SWIG_CSharpByte
 %typemap(csvarin, excode="") (double pattern[ANY]) %{$excode%}
 
 /* Typemaps for int array */
-%typemap(imtype, out="IntPtr") int *panIndexes "int[]"
+%typemap(imtype, out="System.IntPtr") int *panIndexes "int[]"
 %typemap(cstype) int *panIndexes %{int[]%}
 %typemap(in) int *panIndexes %{ $1 = ($1_ltype)$input; %}
 %typemap(csin) (int *panIndexes)  "$csinput"
 
 /* Typemaps for device handle */
-%typemap(imtype) (void* device)  %{IntPtr%}
-%typemap(cstype) (void* device) %{IntPtr%}
+%typemap(imtype) (void* device)  %{ IntPtr%}
+%typemap(cstype) (void* device) %{ IntPtr%}
 %typemap(in) (void* device) %{ $1 = ($1_ltype)$input; %}
 %typemap(csin) (void* device)  "$csinput"
 
