@@ -59,7 +59,7 @@ before_install:
   # install swig 3.0.12 (defaults to 2.0.11 on trusty)
   - sudo wget -O swig-3.0.12.tar.gz https://github.com/swig/swig/archive/rel-3.0.12.tar.gz
   - sudo tar xf swig-3.0.12.tar.gz
-  - sudo cd swig-3.0.12
+  - cd swig-3.0.12
   - sudo ./configure --prefix=/usr
   - swig -version
   - cd msautotest
