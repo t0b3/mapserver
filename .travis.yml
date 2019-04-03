@@ -57,7 +57,7 @@ before_install:
   - sudo apt-get install --allow-unauthenticated php5-dev || sudo apt-get install --allow-unauthenticated php7-dev
   - sudo pip install git+git://github.com/tbonfort/cpp-coveralls.git@extensions
   # install swig 3.0.12 (defaults to 2.0.11 on trusty)
-  - sudo wget https://github.com/swig/swig/archive/rel-3.0.12.tar.gz
+  - sudo wget -O swig-3.0.12.tar.gz https://github.com/swig/swig/archive/rel-3.0.12.tar.gz
   - sudo tar xf swig-3.0.12.tar.gz
   - sudo cd swig-3.0.12
   - sudo ./configure --prefix=/usr
