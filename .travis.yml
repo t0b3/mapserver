@@ -56,6 +56,8 @@ before_install:
   - sudo apt-get install --allow-unauthenticated libmono-system-drawing4.0-cil mono-mcs
   - sudo apt-get install --allow-unauthenticated php5-dev || sudo apt-get install --allow-unauthenticated php7-dev
   - sudo pip install git+git://github.com/tbonfort/cpp-coveralls.git@extensions
+  # check the installed SWIG version
+  - swig -version
   - cd msautotest
   - ./create_postgis_test_data.sh
   - python -m SimpleHTTPServer &> /dev/null &
