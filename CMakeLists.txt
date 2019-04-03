@@ -118,7 +118,7 @@ int main(int argc, char **argv) {
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-#options suported by the cmake builder
+#options supported by the cmake builder
 option(WITH_PROJ "Choose if reprojection support should be built in" ON)
 option(WITH_PROTOBUFC "Choose if protocol buffers support should be built in (required for vector tiles)" ON)
 option(WITH_KML "Enable native KML output support (requires libxml2 support)" OFF)
