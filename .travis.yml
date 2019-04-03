@@ -56,19 +56,17 @@ before_install:
   - sudo apt-get install --allow-unauthenticated libmono-system-drawing4.0-cil mono-mcs
   - sudo apt-get install --allow-unauthenticated php5-dev || sudo apt-get install --allow-unauthenticated php7-dev
   - sudo pip install git+git://github.com/tbonfort/cpp-coveralls.git@extensions
-  # install swig 3.0.12 (defaults to 2.0.11 on trusty)
-  - sudo wget http://prdownloads.sourceforge.net/swig/swig-3.0.12.tar.gz
-  - tar xf swig-3.0.12.tar.gz
-  - cd swig-3.0.12 && ./configure --prefix=/usr && make && sudo make install
-  - swig -version
-   - cd ..
   - cd msautotest
   - ./create_postgis_test_data.sh
   - python -m SimpleHTTPServer &> /dev/null &
   - cd ..
   - touch maplexer.l
   - touch mapparser.y
-
+  # install swig 3.0.12 (defaults to 2.0.11 on trusty)
+  - sudo wget http://prdownloads.sourceforge.net/swig/swig-3.0.12.tar.gz
+  - tar xf swig-3.0.12.tar.gz
+  - cd swig-3.0.12 && ./configure --prefix=/usr && make && sudo make install
+  - swig -version
 
 
 script:
