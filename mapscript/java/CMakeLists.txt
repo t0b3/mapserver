@@ -13,6 +13,8 @@ include_directories(${PROJECT_SOURCE_DIR}/mapscript/)
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/java)
 set (CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_BINARY_DIR}/edu/umn/gis/mapscript")
 set(CMAKE_SWIG_FLAGS -package edu.umn.gis.mapscript)
+# avoid errors about breaking strict aliasing rules see http://www.swig.org/Doc3.0/Java.html#Java_compiling_dynamic
+set_property(TARGET javamapscript PROPERTY SWIG_COMPILE_OPTIONS -fno-strict-aliasing)
 
 if (${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} VERSION_GREATER 3.7)
     swig_add_library(javamapscript TYPE MODULE LANGUAGE java SOURCES ../mapscript.i)
