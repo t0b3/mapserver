@@ -59,10 +59,10 @@ before_install:
   #- if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.0" ]]; then sudo apt-get install --allow-unauthenticated php7.0-dev; fi 
   - sudo apt-get install --allow-unauthenticated libperl-dev
   - sudo pip install git+git://github.com/tbonfort/cpp-coveralls.git@extensions
-  # install swig 3.0.12 (defaults to 2.0.11 on trusty)
-  - sudo wget http://prdownloads.sourceforge.net/swig/swig-3.0.12.tar.gz
-  - tar xf swig-3.0.12.tar.gz
-  - cd swig-3.0.12 && ./configure --prefix=/usr && make && sudo make install
+  # install swig swig-4.0.0-beta1 (defaults to 2.0.11 on trusty)
+  - sudo wget http://prdownloads.sourceforge.net/swig/swig-4.0.0-beta1.tar.gz
+  - tar xf swig-4.0.0-beta1.tar.gz
+  - cd swig-4.0.0-beta1 && ./configure --prefix=/usr && make && sudo make install
   - swig -version
   - cd ..
   - cd msautotest
