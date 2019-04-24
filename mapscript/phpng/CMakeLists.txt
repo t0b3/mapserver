@@ -68,3 +68,6 @@ set_target_properties(${SWIG_MODULE_mapscript_REAL_NAME} PROPERTIES PREFIX "")
 if(NOT WIN32)
   install(TARGETS php_mapscriptng DESTINATION ${PHP_EXTENSION_DIR})
 endif()
+
+message(STATUS "PHP_INCLUDE_PATH: ${PHP_INCLUDE_PATH}")
+message(STATUS "PHP_VERSION: ${PHP_VERSION}")
