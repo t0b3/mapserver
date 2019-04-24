@@ -22,13 +22,12 @@ if(WIN32)
   endif(WITH_THREAD_SAFETY)
 endif(WIN32)
 
-#include_directories(${PHP_INCLUDE_PATH})
+include_directories(${PHP_INCLUDE_PATH})
 #include_directories(${PHP_INCLUDE_PATH}/main)
 #include_directories(${PHP_INCLUDE_PATH}/Zend)
 #include_directories(${PHP_INCLUDE_PATH}/TSRM)
 
-include_directories("/usr/include/php/20151012;/usr/include/php/20151012/main;/usr/include/php/20151012/TSRM;/usr/include/php/20151012/Zend;/usr/include/php/20151012/ext;/usr/include/php/20151012/ext/date/lib")
-
+message(STATUS "PHP_INCLUDE_PATH: ${PHP_INCLUDE_PATH}")
 
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/swiginc)
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/)
@@ -71,6 +70,3 @@ set_target_properties(${SWIG_MODULE_mapscript_REAL_NAME} PROPERTIES PREFIX "")
 if(NOT WIN32)
   install(TARGETS php_mapscriptng DESTINATION ${PHP_EXTENSION_DIR})
 endif()
-
-message(STATUS "PHP_INCLUDE_PATH: ${PHP_INCLUDE_PATH}")
-message(STATUS "PHP_VERSION: ${PHP_VERSION}")
