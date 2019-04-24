@@ -71,11 +71,10 @@ before_install:
   - cd ..
   - touch maplexer.l
   - touch mapparser.y
-  - php -r 'echo phpinfo();'
 
 script:
   - make cmakebuild
-  - make mspython-wheel
+  #- make mspython-wheel
   - make -j4 test
 
 after_success:
