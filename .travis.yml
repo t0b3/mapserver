@@ -71,7 +71,7 @@ before_install:
   - cd ..
   - touch maplexer.l
   - touch mapparser.y
-
+  - php -r 'echo phpinfo();'
 
 script:
   - make cmakebuild

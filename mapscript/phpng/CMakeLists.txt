@@ -23,10 +23,6 @@ if(WIN32)
 endif(WIN32)
 
 include_directories(${PHP_INCLUDE_PATH})
-#include_directories(${PHP_INCLUDE_PATH}/main)
-#include_directories(${PHP_INCLUDE_PATH}/Zend)
-#include_directories(${PHP_INCLUDE_PATH}/TSRM)
-
 message(STATUS "PHP_INCLUDE_PATH: ${PHP_INCLUDE_PATH}")
 
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/swiginc)
