@@ -22,10 +22,13 @@ if(WIN32)
   endif(WITH_THREAD_SAFETY)
 endif(WIN32)
 
-include_directories(${PHP_INCLUDE_PATH})
-include_directories(${PHP_INCLUDE_PATH}/main)
-include_directories(${PHP_INCLUDE_PATH}/Zend)
-include_directories(${PHP_INCLUDE_PATH}/TSRM)
+#include_directories(${PHP_INCLUDE_PATH})
+#include_directories(${PHP_INCLUDE_PATH}/main)
+#include_directories(${PHP_INCLUDE_PATH}/Zend)
+#include_directories(${PHP_INCLUDE_PATH}/TSRM)
+
+include_directories("/usr/include/php/20151012;/usr/include/php/20151012/main;/usr/include/php/20151012/TSRM;/usr/include/php/20151012/Zend;/usr/include/php/20151012/ext;/usr/include/php/20151012/ext/date/lib")
+
 
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/swiginc)
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/)
@@ -59,7 +62,7 @@ if(WIN32)
   if(WITH_THREAD_SAFETY)
     target_compile_options(php_mapscriptng PRIVATE /DZTS=1)
   endif(WITH_THREAD_SAFETY)
-    SWIG_LINK_LIBRARIES(php_mapscriptng ${PHP_LIBRARY})
+  SWIG_LINK_LIBRARIES(php_mapscriptng ${PHP_LIBRARY})
 endif(WIN32)
 
 target_link_libraries(php_mapscriptng mapserver)
