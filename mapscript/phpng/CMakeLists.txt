@@ -22,6 +22,10 @@ if(WIN32)
   endif(WITH_THREAD_SAFETY)
 endif(WIN32)
 
+# hide "defined but not used" warnings
+SET(GCC_COVERAGE_COMPILE_FLAGS "-Wno-unused-label")
+add_definitions(${GCC_COVERAGE_COMPILE_FLAGS})
+
 include_directories(${PHP_INCLUDE_PATH})
 message(STATUS "PHP_INCLUDE_PATH: ${PHP_INCLUDE_PATH}")
 
