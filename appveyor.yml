@@ -29,7 +29,7 @@ services:
 matrix:
   fast_finish: true
 
-shallow_clone: true
+shallow_clone: false
 
 build_script:
   - set "BUILD_FOLDER=%APPVEYOR_BUILD_FOLDER:\=/%"
@@ -70,12 +70,12 @@ before_test:
   - cd %BUILD_FOLDER%/msautotest
   - "./mssql/create_mssql_db.bat"
   - set PATH=%ORIGINAL_PATH%
-  - pip install -U -r requirements.txt
+  - %PYTHON_EXECUTABLE% -m pip install -U -r requirements.txt
 
 test_script:
   - cd %BUILD_FOLDER%/msautotest
   - cd mspython
-   - %PYTHON_EXECUTABLE% run_all_tests.py
+  - %PYTHON_EXECUTABLE% run_all_tests.py
   - cd %BUILD_FOLDER%/build
   - set PATH=%BUILD_FOLDER%/build/Release;%BUILD_FOLDER%/sdk/%SDK%/bin;%PATH%
   - set PROJ_LIB=%BUILD_FOLDER%/sdk/%SDK%/bin/proj/SHARE
