@@ -31,6 +31,11 @@
  * is really what the real dependency is.
  */
 #include "mapserver-config.h"
+
+#ifdef _WIN32
+#include <windows.h> /* OutputDebugStringA() */
+#endif
+
 #if defined(USE_CURL)
 
 #include "mapserver.h"
