@@ -27,7 +27,7 @@ services:
   - mssql2017
 
 matrix:
-  fast_finish: false # true
+  fast_finish: true
 
 shallow_clone: false
 clone_depth: 5
