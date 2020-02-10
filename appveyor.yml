@@ -75,7 +75,7 @@ before_test:
   - cd %BUILD_FOLDER%/msautotest
   - "./mssql/create_mssql_db.bat"
   - "%PYTHON_EXECUTABLE% -m pip install -U -r requirements.txt"
-  - "%PYTHON_EXECUTABLE% -m pip install --no-index --find-links=%BUILD_FOLDER%/mapscript/python/Release/dist mapscript"
+  - "%PYTHON_EXECUTABLE% -m pip install --no-index --find-links=file://%BUILD_FOLDER%/mapscript/python/Release/dist mapscript"
 
 test_script:
   - cd %BUILD_FOLDER%/msautotest/mspython
