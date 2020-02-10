@@ -1,17 +1,17 @@
 #
-# Test Filter Expressions with the MSSQL driver plugin
+# Test Filter Expressions with the MSSQL driver plugin - based on filters_postgis.map
 #
 # REQUIRES: OUTPUT=PNG
 #
 # RUN_PARMS: filters_mssql_test001.png [SHP2IMG] -m [MAPFILE] -l filters_mssql_test001 -o [RESULT]
-# RUN_PARMS: filters_mssql_test002.png [SHP2IMG] -m [MAPFILE] -l filters_mssql_test002 -o [RESULT]
-# RUN_PARMS: filters_mssql_test003.png [SHP2IMG] -m [MAPFILE] -l filters_mssql_test003 -o [RESULT]
-# RUN_PARMS: filters_mssql_test004.png [SHP2IMG] -m [MAPFILE] -l filters_mssql_test004 -o [RESULT]
+# SKIP filters_mssql_test002.png [SHP2IMG] -m [MAPFILE] -l filters_mssql_test002 -o [RESULT]
+# SKIP: filters_mssql_test003.png [SHP2IMG] -m [MAPFILE] -l filters_mssql_test003 -o [RESULT]
+# SKIP: filters_mssql_test004.png [SHP2IMG] -m [MAPFILE] -l filters_mssql_test004 -o [RESULT]
 # RUN_PARMS: filters_mssql_test005.png [SHP2IMG] -m [MAPFILE] -l filters_mssql_test005 -o [RESULT]
 # RUN_PARMS: filters_mssql_test006.png [SHP2IMG] -m [MAPFILE] -l filters_mssql_test006 -o [RESULT]
-# RUN_PARMS: filters_mssql_test007.png [SHP2IMG] -m [MAPFILE] -l filters_mssql_test007 -o [RESULT]
-# RUN_PARMS: filters_mssql_test008.png [SHP2IMG] -m [MAPFILE] -l filters_mssql_test008 -o [RESULT]
-# RUN_PARMS: filters_mssql_test009.png [SHP2IMG] -m [MAPFILE] -l filters_mssql_test009 -o [RESULT]
+# SKIP: filters_mssql_test007.png [SHP2IMG] -m [MAPFILE] -l filters_mssql_test007 -o [RESULT]
+# SKIP: filters_mssql_test008.png [SHP2IMG] -m [MAPFILE] -l filters_mssql_test008 -o [RESULT]
+# SKIP: filters_mssql_test009.png [SHP2IMG] -m [MAPFILE] -l filters_mssql_test009 -o [RESULT]
 #
 MAP
   NAME 'filters_mssql'
