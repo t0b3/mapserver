@@ -98,7 +98,7 @@ MAP
   LAYER
     NAME 'bdry_counpy2'
     TYPE LINE
-    DATA 'data/bdry_counpy2.shp'
+    DATA '../query/data/bdry_counpy2.shp'
     STATUS DEFAULT
     CLASS COLOR 231 231 231 END
   END
