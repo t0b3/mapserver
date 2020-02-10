@@ -65,23 +65,23 @@ build_script:
   - cmake --build . --config Release
 
 before_test:
-  - set ORIGINAL_PATH=%PATH%
+  - cd %BUILD_FOLDER%/build
+  - set PATH=%BUILD_FOLDER%/build/Release;%BUILD_FOLDER%/sdk/%SDK%/bin;%PATH%
+  - set PROJ_LIB=%BUILD_FOLDER%/sdk/%SDK%/bin/proj/SHARE
+  - cmake --build . --target pythonmapscript-wheel --config Release
+
   - set PROJ_LIB=%SDK_BIN%/proj6/share
   - set PATH=%SDK_BIN%;%SDK_BIN%/gdal/apps;%PATH%
   - cd %BUILD_FOLDER%/msautotest
   - "./mssql/create_mssql_db.bat"
-  - set PATH=%ORIGINAL_PATH%
   - "%PYTHON_EXECUTABLE% -m pip install -U -r requirements.txt"
+  - "%PYTHON_EXECUTABLE% -m pip install --no-index --find-links=%BUILD_FOLDER%/mapscript/python/Release/dist mapscript
 
 test_script:
   - cd %BUILD_FOLDER%/msautotest/mspython
   - "%PYTHON_EXECUTABLE% run_all_tests.py"
   - cd %BUILD_FOLDER%/msautotest/mssql
   - "%PYTHON_EXECUTABLE% run_test.py"
-  - cd %BUILD_FOLDER%/build
-  - set PATH=%BUILD_FOLDER%/build/Release;%BUILD_FOLDER%/sdk/%SDK%/bin;%PATH%
-  - set PROJ_LIB=%BUILD_FOLDER%/sdk/%SDK%/bin/proj/SHARE
-  - cmake --build . --target pythonmapscript-wheel --config Release
 
 deploy: off
 
