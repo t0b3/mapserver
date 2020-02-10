@@ -639,7 +639,7 @@ void setMSSQL2008LayerInfo(layerObj *layer, msMSSQL2008LayerInfo *MSSQL2008layer
 void handleSQLError(layerObj *layer)
 {
   SQLCHAR       SqlState[6], Msg[SQL_MAX_MESSAGE_LENGTH];
-  SQLLEN     NativeError;
+  SQLINTEGER     NativeError;
   SQLSMALLINT   i, MsgLen;
   SQLRETURN  rc;
   msMSSQL2008LayerInfo *layerinfo = getMSSQL2008LayerInfo(layer);
@@ -662,7 +662,7 @@ void handleSQLError(layerObj *layer)
 /* dont send in empty strings or strings with just " " in them! */
 static char* removeWhite(char *str)
 {
-  int     initial;
+  size_t     initial;
   char    *orig, *loc;
 
   initial = strspn(str, " ");
@@ -690,10 +690,10 @@ static char *strstrIgnoreCase(const char *haystack, const char *needle)
 {
   char    *hay_lower;
   char    *needle_lower;
-  int     len_hay,len_need;
+  size_t     len_hay,len_need;
   int     t;
   char    *loc;
-  int     match = -1;
+  size_t     match = -1;
 
   len_hay = strlen(haystack);
   len_need = strlen(needle);
@@ -1352,7 +1352,6 @@ static int prepare_database(layerObj *layer, rectObj rect, char **query_string)
   int         t;
 
   char        *pos_from, *pos_ftab, *pos_space, *pos_paren;
-  rectObj     extent;
   int hasFilter = MS_FALSE;
 
   layerinfo =  getMSSQL2008LayerInfo(layer);
@@ -2222,7 +2221,7 @@ int msMSSQL2008LayerGetShapeRandom(layerObj *layer, shapeObj *shape, long *recor
       return MS_DONE;
     }
 
-    /* retreive an item */
+    /* retrieve an item */
 
     {
       /* have to retrieve shape attributes */
@@ -2655,7 +2654,7 @@ int msMSSQL2008LayerGetItems(layerObj *layer)
 {
   msMSSQL2008LayerInfo  *layerinfo;
   char                *sql = NULL;
-  int                 t, sqlSize;
+  size_t                 t, sqlSize;
   char                found_geom = 0;
   int                 item_num;
   SQLSMALLINT cols = 0;
@@ -2826,7 +2825,7 @@ int msMSSQL2008LayerRetrievePK(layerObj *layer, char **urid_name, char* table_na
 static int msMSSQL2008LayerParseData(layerObj *layer, char **geom_column_name, char **geom_column_type, char **table_name, char **urid_name, char **user_srid, char **index_name, char **sort_spec, int debug)
 {
   char    *pos_opt, *pos_scn, *tmp, *pos_srid, *pos_urid, *pos_geomtype, *pos_geomtype2, *pos_indexHint, *data, *pos_order;
-  int     slength;
+  size_t     slength;
 
   data = msStrdup(layer->data);
   /* replace tabs with spaces */
@@ -2965,7 +2964,7 @@ char *msMSSQL2008LayerEscapePropertyName(layerObj *layer, const char* pszString)
   int i, j = 0;
 
   if (pszString && strlen(pszString) > 0) {
-    int nLength = strlen(pszString);
+    size_t nLength = strlen(pszString);
 
     pszEscapedStr = (char*) msSmallMalloc( 1 + nLength + 1 + 1);
     pszEscapedStr[j++] = '[';
