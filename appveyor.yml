@@ -114,6 +114,6 @@ deploy:
 deploy_script:
   - ps: if ($env:APPVEYOR_REPO_TAG -eq $TRUE) {
             Write-Host "Tagged release - deploying Python Wheel to PyPI";
-            pip install twine;
-            twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing $env:APPVEYOR_BUILD_FOLDER/build/mapscript/python/Release/dist/*;
+            $env:PYTHON_EXECUTABLE -m pip --disable-pip-version-check install twine;
+            $env:PYTHON_EXECUTABLE -m twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing $env:APPVEYOR_BUILD_FOLDER/build/mapscript/python/Release/dist/*;
         }
