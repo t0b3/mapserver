@@ -102,18 +102,10 @@ artifacts:
     name: mapserver
     type: zip
 
-deploy:
-  provider: GitHub
-  auth_token:
-    secure: 1FJ9ZyG2q5HxxYFSdC6HUA8+mjE9dKd55qPc6i2NZCRaOSDVog0tsoclT3e7N1sG
-  draft: false
-  on:
-    branch: master                 # release from master branch only
-    APPVEYOR_REPO_TAG: true        # deploy on tag push only
-
 deploy_script:
-  - ps: if ($env:APPVEYOR_REPO_TAG -eq $TRUE) {
-            Write-Host "Tagged release - deploying Python Wheel to PyPI";
-            $env:PYTHON_EXECUTABLE -m pip --disable-pip-version-check install twine;
-            $env:PYTHON_EXECUTABLE -m twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing $env:APPVEYOR_BUILD_FOLDER/build/mapscript/python/Release/dist/*;
-        }
+  - ps: >-
+        if ($env:APPVEYOR_REPO_BRANCH -eq "master" -and $env:APPVEYOR_REPO_TAG -eq $TRUE) {
+            Write-Host "Deploying Python Wheel to PyPI"
+            $env:PYTHON_EXECUTABLE -m pip --disable-pip-version-check install twine
+            $env:PYTHON_EXECUTABLE -m twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing $env:APPVEYOR_BUILD_FOLDER/build/mapscript/python/Release/dist/*
+        }]
