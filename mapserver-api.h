@@ -16,7 +16,7 @@ extern "C" {
 
 typedef struct mapObj mapObj;
 typedef struct layerObj layerObj;
-typedef struct classObj classObj;
+//typedef struct classObj classObj;
 typedef struct styleObj styleObj;
 typedef struct labelObj labelObj;
 typedef struct symbolObj symbolObj;
