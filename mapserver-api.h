@@ -16,7 +16,6 @@ extern "C" {
 
 typedef struct mapObj mapObj;
 typedef struct layerObj layerObj;
-//typedef struct classObj classObj;
 typedef struct styleObj styleObj;
 typedef struct labelObj labelObj;
 typedef struct symbolObj symbolObj;
@@ -24,7 +23,6 @@ typedef struct imageObj imageObj;
 
 mapObj* umnms_new_map(char *filename);
 layerObj* umnms_new_layer(mapObj *map);
-//classObj* umnms_new_class(layerObj *layer);
 styleObj* umnms_new_style(classObj *theclass);
 labelObj* umnms_new_label(classObj *theclass);
 
