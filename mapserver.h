@@ -1197,13 +1197,10 @@ typedef struct labelObj labelObj;
   /*      basic symbolization and classification information              */
   /************************************************************************/
 
+ typedef struct {
+
 #ifdef SWIG
     %feature("docstring", "The :ref:`CLASS <class>` object. Used for symbolization and classification information.") classObj;
-#endif /* SWIG */
-
-  struct classObj {
-
-#ifdef SWIG
     %immutable;
     %feature("docstring", "**immutable**. See :ref:`METADATA <mapfile-class-metadata>`") metadata;
     %feature("docstring", "**immutable**. See :ref:`VALIDATION <mapfile-class-validation>`") validation;
@@ -1264,7 +1261,7 @@ typedef struct labelObj labelObj;
     double scalefactor; // computed, not set
 #endif /* not SWIG */
 
-  };
+  } classObj;
 
   /************************************************************************/
   /*                         labelCacheMemberObj                          */
