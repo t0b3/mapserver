@@ -114,14 +114,20 @@ extern "C" {
   typedef struct {
 #ifdef SWIG
     %immutable;
+    %feature("docstring", "An object containing information about a DBF file.") DBFInfo;
+    %feature("docstring", "Number of fields in the DBF") nFields;
+    %feature("docstring", "Number of records in the DBF") nRecords;
 #endif
-    VSILFILE  *fp;
 
     int   nRecords;
+    int   nFields;
+
+#ifndef SWIG
+    VSILFILE  *fp;
 
     unsigned int nRecordLength;
     int   nHeaderLength;
-    int   nFields;
+
     int   *panFieldOffset;
     int   *panFieldSize;
     int   *panFieldDecimals;
@@ -138,6 +144,8 @@ extern "C" {
 
     char  *pszStringField;
     int   nStringFieldLen;
+#endif /* not SWIG */
+
 #ifdef SWIG
     %mutable;
 #endif
