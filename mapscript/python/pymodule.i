@@ -95,7 +95,7 @@ CreateTupleFromDoubleArray( double *first, unsigned int size ) {
  *  Typemap to turn a Python dict into two sequences and
  *  an item count. Used for msApplySubstitutions
  */
-%typemap(in) (char **names, char **values, int npairs) {
+%typemap(in) (const char **names, const char **values, int npairs) {
   /* Check if is a dict */
   if (PyDict_Check($input)) {
 
@@ -106,8 +106,8 @@ CreateTupleFromDoubleArray( double *first, unsigned int size ) {
     PyObject* values = PyDict_Values($input);
 
     $3 = size;
-    $1 = (const char **) malloc((size+1)*sizeof(char *));
-    $2 = (const char **) malloc((size+1)*sizeof(char *));
+    $1 = (char **) malloc((size+1)*sizeof(char *));
+    $2 = (char **) malloc((size+1)*sizeof(char *));
 
     for (i = 0; i < size; i++) {
         PyObject* key = PyList_GetItem(keys, i);
