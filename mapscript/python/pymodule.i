@@ -95,7 +95,7 @@ CreateTupleFromDoubleArray( double *first, unsigned int size ) {
  *  Typemap to turn a Python dict into two sequences and
  *  an item count. Used for msApplySubstitutions
  */
-%typemap(in) (const char **names, const char **values, int npairs) {
+%typemap(in) (char **names, char **values, int npairs) {
   /* Check if is a dict */
   if (PyDict_Check($input)) {
 
@@ -114,8 +114,10 @@ CreateTupleFromDoubleArray( double *first, unsigned int size ) {
         PyObject* val = PyList_GetItem(values, i);
 
         %#if PY_MAJOR_VERSION >= 3
-            $1[i] = PyUnicode_AsUTF8(key);
-            $2[i] = PyUnicode_AsUTF8(val);
+            // Changed in version 3.7: The return type is now const char * rather of char *.
+            // avoid warning C4090: '=': different 'const' qualifiers
+            $1[i] = (char *)PyUnicode_AsUTF8(key);
+            $2[i] = (char *)PyUnicode_AsUTF8(val);
         %#else
             $1[i] = PyString_AsString(key);
             $2[i] = PyString_AsString(val);
