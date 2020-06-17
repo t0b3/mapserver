@@ -12,7 +12,7 @@ execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig impor
 execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import sys; print(sys.prefix)" OUTPUT_VARIABLE PYTHON_PREFIX OUTPUT_STRIP_TRAILING_WHITESPACE)
 execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(True))" OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-find_path(PYTHON_INCLUDE_PATH Python.h
+find_path(PYTHON_INCLUDE_DIR Python.h
   HINTS ${PYTHON_INC}
 )
 
@@ -22,11 +22,11 @@ find_library(PYTHON_LIBRARIES
 )
 
 #if that failed, fall back to the default cmake method of finding python dev files
-if(NOT PYTHON_INCLUDE_PATH OR NOT PYTHON_LIBRARIES)
+if(NOT PYTHON_INCLUDE_DIR OR NOT PYTHON_LIBRARIES)
   find_package(PythonLibs)
 endif()
 
-include_directories(${PYTHON_INCLUDE_PATH})
+include_directories(${PYTHON_INCLUDE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/swiginc)
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/)
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/python)
