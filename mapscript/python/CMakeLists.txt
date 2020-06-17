@@ -1,38 +1,40 @@
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
-find_package(PythonInterp)
-find_python_module(setuptools REQUIRED)
+
+find_package (Python COMPONENTS Interpreter Development)
+
+#find_python_module(setuptools REQUIRED)
 
 # Python library/header finding doesn't seem to honor the python
 # interpreter that was found beforehand, and defaults to the system
 # python. We first try to find python.h and libpython.so ourselves
 # from the hints given by distutils and sys
 
-execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_inc; print(get_python_inc(True))" OUTPUT_VARIABLE PYTHON_INC OUTPUT_STRIP_TRAILING_WHITESPACE)
-execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import sys; print(sys.prefix)" OUTPUT_VARIABLE PYTHON_PREFIX OUTPUT_STRIP_TRAILING_WHITESPACE)
-execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(True))" OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
+#execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_inc; print(get_python_inc(True))" OUTPUT_VARIABLE PYTHON_INC OUTPUT_STRIP_TRAILING_WHITESPACE)
+#execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import sys; print(sys.prefix)" OUTPUT_VARIABLE PYTHON_PREFIX OUTPUT_STRIP_TRAILING_WHITESPACE)
+#execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(True))" OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
+#
+#find_path(PYTHON_INCLUDE_PATH Python.h
+#  HINTS ${PYTHON_INC}
+#)
+#
+#find_library(PYTHON_LIBRARIES
+#  NAMES python${PYTHON_VERSION_STRING} python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} python
+#  HINTS ${PYTHON_PREFIX}/lib
+#)
+#
+#set(PYTHON_LIBRARIES, "C:/Python38-x64/libs/python38.lib")
+##if that failed, fall back to the default cmake method of finding python dev files
+#if(NOT PYTHON_INCLUDE_PATH OR NOT PYTHON_LIBRARIES)
+#  find_package(PythonLibs)
+#endif()
 
-find_path(PYTHON_INCLUDE_PATH Python.h
-  HINTS ${PYTHON_INC}
-)
-
-find_library(PYTHON_LIBRARIES
-  NAMES python${PYTHON_VERSION_STRING} python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} python
-  HINTS ${PYTHON_PREFIX}/lib
-)
-
-set(PYTHON_LIBRARIES, "C:/Python38-x64/libs/python38.lib")
-#if that failed, fall back to the default cmake method of finding python dev files
-if(NOT PYTHON_INCLUDE_PATH OR NOT PYTHON_LIBRARIES)
-  find_package(PythonLibs)
-endif()
-
-include_directories(${PYTHON_INCLUDE_PATH})
+include_directories(${Python_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/swiginc)
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/)
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/python)
 
-if (${PYTHON_VERSION_MAJOR} VERSION_GREATER 2)
+if (${Python_VERSION_MAJOR} VERSION_GREATER 2)
     set_property(SOURCE ../mapscript.i PROPERTY SWIG_FLAGS "-py3")
 endif ()
 
@@ -42,7 +44,7 @@ else ()
     swig_add_module(pythonmapscript python ../mapscript.i)
 endif ()
 
-swig_link_libraries(pythonmapscript ${PYTHON_LIBRARIES} ${MAPSERVER_LIBMAPSERVER})
+swig_link_libraries(pythonmapscript ${Python_LIBRARIES} ${MAPSERVER_LIBMAPSERVER})
 
 set_target_properties(${SWIG_MODULE_pythonmapscript_REAL_NAME} PROPERTIES PREFIX "")
 set_target_properties(${SWIG_MODULE_pythonmapscript_REAL_NAME} PROPERTIES OUTPUT_NAME _mapscript)
