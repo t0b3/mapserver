@@ -41,7 +41,7 @@ services:
 matrix:
   fast_finish: false
   exclude:
-    - PYTHON_EXECUTABLE: c:/python38-x64/python.exe
+    - PYTHON_EXECUTABLE: c:/python27/python.exe
       APPVEYOR_REPO_TAG: false # only run on new tagged releases
 
 shallow_clone: false
