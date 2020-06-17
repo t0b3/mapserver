@@ -9,8 +9,6 @@ cache:
   - '%APPVEYOR_BUILD_FOLDER%\swigwin-3.0.12.zip'
   - '%APPVEYOR_BUILD_FOLDER%\swigwin-4.0.1.zip'
 
-configuration: Release
-
 environment:
 
   global:
@@ -41,10 +39,10 @@ services:
   - mssql2017
 
 matrix:
-  fast_finish: false
   exclude:
-    - configuration: Release
+    - platform: x86
       PYTHON_EXECUTABLE: c:/python27/python.exe
+      SWIG_VER: swigwin-3.0.12
 
 shallow_clone: false
 clone_depth: 5
