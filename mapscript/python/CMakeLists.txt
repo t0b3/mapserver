@@ -29,7 +29,7 @@ find_package (Python COMPONENTS Interpreter Development)
 #  find_package(PythonLibs)
 #endif()
 
-include_directories(${Python_INCLUDE_DIRS})
+#include_directories(${Python_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/swiginc)
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/)
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/python)
