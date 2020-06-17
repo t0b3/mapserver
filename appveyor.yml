@@ -39,11 +39,11 @@ services:
   - mssql2017
 
 matrix:
+  fast_finish: true
   exclude:
-    - platform: x86
+    - APPVEYOR_REPO_TAG: false
       PYTHON_EXECUTABLE: c:/python27/python.exe
       SWIG_VER: swigwin-3.0.12
-      APPVEYOR_REPO_TAG: false
 
 shallow_clone: false
 clone_depth: 5
