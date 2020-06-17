@@ -26,8 +26,17 @@ environment:
     PYTHON_EXECUTABLE: c:/python27-x64/python.exe
     SWIG_VER: swigwin-4.0.1
   - platform: x64
+    PYTHON_EXECUTABLE: c:/python38-x64/python.exe
+    SWIG_VER: swigwin-4.0.1
+  - platform: x64
     PYTHON_EXECUTABLE: c:/python36-x64/python.exe
     SWIG_VER: swigwin-4.0.1
+    APPVEYOR_REPO_TAG: true # only run on new tagged releases
+  - platform: x64
+    PYTHON_EXECUTABLE: c:/python37-x64/python.exe
+    SWIG_VER: swigwin-4.0.1
+    APPVEYOR_REPO_TAG: true # only run on new tagged releases
+
 
 services:
   - mssql2017
@@ -39,7 +48,8 @@ shallow_clone: false
 clone_depth: 5
 
 build_script:
-  - ps: Write-Host "Tag $env:APPVEYOR_REPO_TAG $env:APPVEYOR_REPO_TAG_NAME"
+  - ps: Write-Host "Build tag: $env:APPVEYOR_REPO_TAG"
+  - ps: Write-Host "Tag name: $env:APPVEYOR_REPO_TAG_NAME"
   - set "BUILD_FOLDER=%APPVEYOR_BUILD_FOLDER:\=/%"
   - if "%platform%" == "x64" SET VS_FULL=%VS_VERSION% Win64
   - if "%platform%" == "x86" SET VS_FULL=%VS_VERSION%
@@ -114,5 +124,5 @@ deploy_script:
                 & $env:PYTHON_EXECUTABLE setup.py sdist
         }
         Write-Host "Deploying Python Wheel to PyPI. Tag $env:APPVEYOR_REPO_TAG_NAME"
-        & $env:PYTHON_EXECUTABLE -W ignore::DeprecationWarning -m pip --disable-pip-version-check install twine
-        & $env:PYTHON_EXECUTABLE -m twine upload --repository-url https://pypi.org/legacy/ --skip-existing $env:APPVEYOR_BUILD_FOLDER\build\mapscript\python\Release\dist\*
+        & $env:PYTHON_EXECUTABLE -W ignore -m pip --disable-pip-version-check install twine
+        & $env:PYTHON_EXECUTABLE -m twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing $env:APPVEYOR_BUILD_FOLDER\build\mapscript\python\Release\dist\*
