@@ -19,15 +19,6 @@ environment:
   # VS 2017
   VS_VERSION: Visual Studio 15 2017
   matrix:
-  - platform: x86
-    PYTHON_EXECUTABLE: c:/python27/python.exe
-    SWIG_VER: swigwin-3.0.12
-  - platform: x64
-    PYTHON_EXECUTABLE: c:/python27-x64/python.exe
-    SWIG_VER: swigwin-4.0.1
-  - platform: x64
-    PYTHON_EXECUTABLE: c:/python36-x64/python.exe
-    SWIG_VER: swigwin-4.0.1
   - platform: x64
     PYTHON_EXECUTABLE: c:/python38-x64/python.exe
     SWIG_VER: swigwin-4.0.1
