@@ -10,9 +10,9 @@ find_package (Python COMPONENTS Interpreter Development)
 # python. We first try to find python.h and libpython.so ourselves
 # from the hints given by distutils and sys
 
-#execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_inc; print(get_python_inc(True))" OUTPUT_VARIABLE PYTHON_INC OUTPUT_STRIP_TRAILING_WHITESPACE)
-#execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import sys; print(sys.prefix)" OUTPUT_VARIABLE PYTHON_PREFIX OUTPUT_STRIP_TRAILING_WHITESPACE)
-#execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(True))" OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
+#execute_process (COMMAND ${Python_EXECUTABLE} -c "from distutils.sysconfig import get_python_inc; print(get_python_inc(True))" OUTPUT_VARIABLE PYTHON_INC OUTPUT_STRIP_TRAILING_WHITESPACE)
+#execute_process (COMMAND ${Python_EXECUTABLE} -c "import sys; print(sys.prefix)" OUTPUT_VARIABLE PYTHON_PREFIX OUTPUT_STRIP_TRAILING_WHITESPACE)
+#execute_process (COMMAND ${Python_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(True))" OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
 #
 #find_path(PYTHON_INCLUDE_PATH Python.h
 #  HINTS ${PYTHON_INC}
@@ -82,8 +82,8 @@ add_custom_command(
     DEPENDS ${SWIG_MODULE_pythonmapscript_REAL_NAME}
     OUTPUT mapscriptvenv.stamp
     WORKING_DIRECTORY ${OUTPUT_FOLDER}
-    COMMAND ${PYTHON_EXECUTABLE} -m pip install virtualenv
-    COMMAND ${PYTHON_EXECUTABLE} -m virtualenv mapscriptvenv
+    COMMAND ${Python_EXECUTABLE} -m pip install virtualenv
+    COMMAND ${Python_EXECUTABLE} -m virtualenv mapscriptvenv
     COMMAND ${PYTHON_VENV_SCRIPTS}/python -m pip install pip --upgrade --force-reinstall > pip_update.log
     COMMAND ${PYTHON_VENV_SCRIPTS}/pip install -r ${PROJECT_SOURCE_DIR}/mapscript/python/requirements-dev.txt > requires.log
     COMMENT "Creating a Python virtual environment and installing the required packages"
