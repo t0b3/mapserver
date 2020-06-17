@@ -41,7 +41,7 @@ clone_depth: 5
 init:
   - ps: |
         if ($env:APPVEYOR_REPO_TAG -ne $TRUE) {
-            if ($env:PYTHON_EXECUTABLE) -eq "c:/python36-x64/python.exe" {
+            if ($env:PYTHON_EXECUTABLE -eq "c:/python36-x64/python.exe") {
                 Write-Host "Skipping build, not a tagged release"
                 Exit-AppVeyorBuild
             }
