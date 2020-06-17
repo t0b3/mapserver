@@ -8,7 +8,11 @@ cache:
   - '%LOCALAPPDATA%\pip\Cache'
   - '%APPVEYOR_BUILD_FOLDER%\swigwin-3.0.12.zip'
   - '%APPVEYOR_BUILD_FOLDER%\swigwin-4.0.1.zip'
-  
+
+configuration:
+  - Release
+
+
 environment:
 
   global:
@@ -41,7 +45,8 @@ services:
 matrix:
   fast_finish: false
   exclude:
-    - PYTHON_EXECUTABLE: c:/python27/python.exe
+    - configuration: Release
+      PYTHON_EXECUTABLE: c:/python27/python.exe
       APPVEYOR_REPO_TAG: false # only run on new tagged releases
 
 shallow_clone: false
