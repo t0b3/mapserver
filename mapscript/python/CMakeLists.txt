@@ -29,12 +29,12 @@ find_package (Python COMPONENTS Interpreter Development)
 #  find_package(PythonLibs)
 #endif()
 
-#include_directories(${Python_INCLUDE_DIRS})
+include_directories(${Python_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/swiginc)
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/)
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/python)
 
-if (${Python_VERSION_MAJOR} VERSION_GREATER 2)
+if (${Python_VERSION_MAJOR} GREATER 2)
     set_property(SOURCE ../mapscript.i PROPERTY SWIG_FLAGS "-py3")
 endif ()
 
