@@ -39,7 +39,6 @@ services:
   - mssql2017
 
 matrix:
-  fast_finish: false
   exclude:
     - platform: x86
       PYTHON_EXECUTABLE: c:/python27/python.exe
