@@ -28,21 +28,21 @@ environment:
   - platform: x64
     PYTHON_EXECUTABLE: c:/python36-x64/python.exe
     SWIG_VER: swigwin-4.0.1
-    APPVEYOR_REPO_TAG: true # only run on new tagged releases
   - platform: x64
     PYTHON_EXECUTABLE: c:/python37-x64/python.exe
     SWIG_VER: swigwin-4.0.1
   - platform: x64
     PYTHON_EXECUTABLE: c:/python38-x64/python.exe
     SWIG_VER: swigwin-4.0.1
-    APPVEYOR_REPO_TAG: true # only run on new tagged releases
-
 
 services:
   - mssql2017
 
 matrix:
   fast_finish: false
+  exclude:
+    - PYTHON_EXECUTABLE: c:/python38-x64/python.exe
+      APPVEYOR_REPO_TAG: false # only run on new tagged releases
 
 shallow_clone: false
 clone_depth: 5
