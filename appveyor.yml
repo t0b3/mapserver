@@ -72,6 +72,8 @@ build_script:
   - cd %BUILD_FOLDER%/build
   - set PATH=%BUILD_FOLDER%/build/Release;%SDK_BIN%;%PATH%
   - set PROJ_LIB=%SDK_BIN%/proj/SHARE
+  # check the mapserver exe can run
+  - mapserv -v
   - cmake --build . --target pythonmapscript-wheel --config Release
 
 before_test:
@@ -104,11 +106,12 @@ artifacts:
 
 deploy_script:
   - ps: |
-        if ($env:APPVEYOR_REPO_BRANCH -ne "master" -or $env:APPVEYOR_REPO_TAG -ne $TRUE) { return }
-            if ($env:PYTHON_EXECUTABLE -eq "c:/python36-x64/python.exe") {
+        if ($env:APPVEYOR_REPO_TAG -ne $TRUE -or ($env:APPVEYOR_REPO_TAG -cSplit "-").Count -ne 4) { return }
+        if ($env:PYTHON_EXECUTABLE -eq "c:/python36-x64/python.exe") {
+            Write-Host "Deploying Python source distribution to PyPI. Tag $env:APPVEYOR_REPO_TAG"
             cd $env:APPVEYOR_BUILD_FOLDER\build\mapscript\python\Release
                 & $env:PYTHON_EXECUTABLE setup.py sdist
-            }
-            echo "Deploying Python Wheel to PyPI"
-            & $env:PYTHON_EXECUTABLE -m pip --disable-pip-version-check install twine
-            & $env:PYTHON_EXECUTABLE -m twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing $env:APPVEYOR_BUILD_FOLDER\build\mapscript\python\Release\dist\*
+        }
+        Write-Host "Deploying Python Wheel to PyPI. Tag $env:APPVEYOR_REPO_TAG"
+        & $env:PYTHON_EXECUTABLE -W ignore::DeprecationWarning -m pip --disable-pip-version-check install twine
+        & $env:PYTHON_EXECUTABLE -m twine upload --repository-url https://pypi.org/legacy/ --skip-existing $env:APPVEYOR_BUILD_FOLDER\build\mapscript\python\Release\dist\*
