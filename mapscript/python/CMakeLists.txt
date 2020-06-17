@@ -136,7 +136,7 @@ add_custom_command(
 install(  
   CODE "
   
-    SET(ENV{PYTHONPATH} \${PYTHON_SITE_PACKAGES}:\$ENV{PYTHONPATH})
+    SET(ENV{PYTHONPATH} \${Python_SITEARCH}:\$ENV{PYTHONPATH})
       
     if(DEFINED ENV{DESTDIR})
       SET(PYTHON_ROOT \"--root=\$ENV{DESTDIR}\")
@@ -147,7 +147,7 @@ install(
     endif()
 
     execute_process(
-      COMMAND ${PYTHON_EXECUTABLE} setup.py install \${PYTHON_ROOT} \${PYTHON_PREFIX}
+      COMMAND ${Python_EXECUTABLE} setup.py install \${PYTHON_ROOT} \${PYTHON_PREFIX}
       WORKING_DIRECTORY ${OUTPUT_FOLDER}
     )
   "
@@ -156,7 +156,7 @@ install(
 message(STATUS "CMake Version: ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}")
 message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "Python MapScript output directory: ${OUTPUT_FOLDER}")
-message(STATUS "Python Executable: ${PYTHON_EXECUTABLE}")
+message(STATUS "Python Executable: ${Python_EXECUTABLE}")
 message(STATUS "Python site packages: ${Python_SITELIB}")
 message(STATUS "Python Libs: ${Python_LIBRARY_DIRS}")
 message(STATUS "Python Includes: ${Python_INCLUDE_DIRS}")
