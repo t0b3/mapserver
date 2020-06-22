@@ -108,7 +108,7 @@ add_custom_command(
     DEPENDS mapscriptwheel.stamp
     OUTPUT mapscripttests.stamp
     COMMAND ${PYTHON_VENV_SCRIPTS}/pip install --no-index --find-links=${OUTPUT_FOLDER}/dist mapscript
-    # ERROR: file or package not found: mapscript.tests (missing __init__.py?) indicates caused by
+    # ERROR: file or package not found: mapscript.tests (missing __init__.py?) is caused by
     # ImportError: DLL load failed while importing _mapscript: The specified module could not be found.
     # VS version used to build MapServer must match the VS version used to build Python?
     COMMAND ${PYTHON_VENV_SCRIPTS}/python -m pytest --pyargs mapscript.tests
