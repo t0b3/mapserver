@@ -1,6 +1,6 @@
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
-if(WIN32 AND (${CMAKE_VERSION} EQUAL "3.12.0") OR (${CMAKE_VERSION} EQUAL "3.12.1") OR (${CMAKE_VERSION} EQUAL "3.12.2") OR (${CMAKE_VERSION} EQUAL "3.12.3"))
+if(WIN32 AND (${CMAKE_VERSION} VERSION_LESS "3.12.3") AND (${CMAKE_VERSION} VERSION_GREATER "3.11"))
     message(FATAL_ERROR "Building with CMAKE ${CMAKE_VERSION} will not work. Please downgrade to 3.11.x or update to a higher version than 3.12.3")
 endif()
 
@@ -47,6 +47,7 @@ IF(PHP_VERSION LESS 7)
       swig_add_module(php_mapscriptng php ../mapscript.i)
   endif ()
 ELSE()
+  MESSAGE(STATUS "HELLOHELLO")
   if (${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} VERSION_GREATER 3.7)
       SWIG_ADD_LIBRARY(php_mapscriptng TYPE MODULE LANGUAGE php7 SOURCES ../mapscript.i)
   else ()
@@ -54,11 +55,14 @@ ELSE()
   endif ()
 ENDIF(PHP_VERSION LESS 7)
 
+message(STATUS "PHP_VERSION: ${PHP_VERSION}")
+
 if(WIN32)
   target_compile_options(php_mapscriptng PRIVATE /DWIN32 /DZEND_WIN32 /DPHP_WIN32 /DZEND_DEBUG=0)
   if(WITH_THREAD_SAFETY)
     target_compile_options(php_mapscriptng PRIVATE /DZTS=1)
   endif(WITH_THREAD_SAFETY)
+  message(STATUS "XXXXPHP_LIBRARY: ${PHP_LIBRARY}")
   SWIG_LINK_LIBRARIES(php_mapscriptng ${PHP_LIBRARY})
 endif(WIN32)
 
@@ -76,8 +80,10 @@ IF(APPLE)
   endif(XCODE)
 ENDIF(APPLE)
 
-# hide "defined but not used" warnings
-target_compile_options(php_mapscriptng PRIVATE -Wno-unused-label)
+if(NOT WIN32)
+    # hide "defined but not used" warnings
+    target_compile_options(php_mapscriptng PRIVATE -Wno-unused-label)
+endif()
 
 target_link_libraries(php_mapscriptng mapserver)
 set_target_properties(${SWIG_MODULE_mapscript_REAL_NAME} PROPERTIES PREFIX "")
