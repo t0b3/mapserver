@@ -3283,48 +3283,6 @@ int loadClass(classObj *class, layerObj *layer)
         break;
 
         /*
-        ** for backwards compatability, these are shortcuts for style 0
-        */
-      case(BACKGROUNDCOLOR):
-        if (msMaybeAllocateClassStyle(class, 0)) return MS_FAILURE;
-        if(loadColor(&(class->styles[0]->backgroundcolor), NULL) != MS_SUCCESS) return(-1);
-        break;
-      case(COLOR):
-        if (msMaybeAllocateClassStyle(class, 0)) return MS_FAILURE;
-        if(loadColor(&(class->styles[0]->color), NULL) != MS_SUCCESS) return(-1);
-        class->numstyles = 1; /* must *always* set a color or outlinecolor */
-        break;
-      case(MAXSIZE):
-        if (msMaybeAllocateClassStyle(class, 0)) return MS_FAILURE;
-        if(getDouble(&(class->styles[0]->maxsize)) == -1) return(-1);
-        break;
-      case(MINSIZE):
-        if (msMaybeAllocateClassStyle(class, 0)) return MS_FAILURE;
-        if(getDouble(&(class->styles[0]->minsize)) == -1) return(-1);
-        break;
-      case(OUTLINECOLOR):
-        if (msMaybeAllocateClassStyle(class, 0)) return MS_FAILURE;
-        if(loadColor(&(class->styles[0]->outlinecolor), NULL) != MS_SUCCESS) return(-1);
-        class->numstyles = 1; /* must *always* set a color, symbol or outlinecolor */
-        break;
-      case(SIZE):
-        if (msMaybeAllocateClassStyle(class, 0)) return MS_FAILURE;
-        if(getDouble(&(class->styles[0]->size)) == -1) return(-1);
-        break;
-      case(SYMBOL):
-        if (msMaybeAllocateClassStyle(class, 0)) return MS_FAILURE;
-        if((state = getSymbol(2, MS_NUMBER,MS_STRING)) == -1) return(-1);
-        if(state == MS_NUMBER)
-          class->styles[0]->symbol = (int) msyynumber;
-        else {
-          if (class->styles[0]->symbolname != NULL)
-            msFree(class->styles[0]->symbolname);
-          class->styles[0]->symbolname = msStrdup(msyystring_buffer);
-          class->numstyles = 1;
-        }
-        break;
-
-        /*
         ** for backwards compatability, these are shortcuts for style 1
         */
       case(OVERLAYBACKGROUNDCOLOR):
