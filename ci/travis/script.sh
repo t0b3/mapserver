@@ -18,7 +18,8 @@ if [ "$BUILD_NAME" = "PHP_7.2_WITH_ASAN" ]; then
     # Only run tests that only involve mapserv/shp2img binaries. mspython, etc would require LD_PREOLOAD'ing the asan shared object
     make -j4 asan_compatible_tests
 elif [ "$BUILD_NAME" = "PHP_7.3_WITH_PROJ7" ]; then
-    sudo update-alternatives --config python3
+    cd /usr/bin
+    sudo ln -sf /opt/pyenv/shims/python3.6 python
     make cmakebuild MFLAGS="-j2" CMAKE_C_FLAGS="-O2" CMAKE_CXX_FLAGS="-O2"
     make mspython-wheel
     make -j4 test
