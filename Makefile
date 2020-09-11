@@ -11,7 +11,7 @@ YACC=yacc
 CMAKEFLAGS=-DCMAKE_C_FLAGS="--coverage ${CMAKE_C_FLAGS}" -DCMAKE_CXX_FLAGS="--coverage ${CMAKE_CXX_FLAGS}" \
 			  -DCMAKE_SHARED_LINKER_FLAGS="-lgcov" -DWITH_CLIENT_WMS=1 \
 			  -DWITH_CLIENT_WFS=1 -DWITH_KML=1 -DWITH_SOS=1 -DWITH_CSHARP=1 -DWITH_PHP=1 -DWITH_PERL=1 \
-			  -DWITH_PYTHON=1 -DPYTHON_EXECUTABLE="$(PYTHON_EXECUTABLE)" \
+			  -DWITH_PYTHON=1 -DPYTHON_EXECUTABLE=$(PYTHON_EXECUTABLE) \
               -DWITH_JAVA=1 -DWITH_THREAD_SAFETY=1 -DWITH_FRIBIDI=1 -DWITH_FCGI=0 -DWITH_EXEMPI=1 \
 			  -DCMAKE_BUILD_TYPE=Release -DWITH_RSVG=1 -DWITH_CURL=1 -DWITH_HARFBUZZ=1 -DWITH_POINT_Z_M=1 -DWITH_MSSQL2008=ON ${EXTRA_CMAKEFLAGS} -DLIBMAPSERVER_EXTRA_FLAGS="${LIBMAPSERVER_EXTRA_FLAGS}"
 all: cmakebuild
@@ -42,7 +42,7 @@ sld-testcase:
 	cd msautotest/sld  && rm -f result/* && export PATH=$(BUILDPATH):$(PATH) && (./run_test.py $(AUTOTEST_OPTS) || /bin/true)
 
 mspython-testcase:
-	test -f "$(PYTHON_MAPSCRIPT_PATH)/_mapscript.so" && (export PYTHONPATH="../../$(PYTHON_MAPSCRIPT_PATH)" && cd msautotest/mspython && "$(PYTHON_EXECUTABLE)" run_all_tests.py)
+	test -f "$(PYTHON_MAPSCRIPT_PATH)/_mapscript.so" && (export PYTHONPATH="../../$(PYTHON_MAPSCRIPT_PATH)" && cd msautotest/mspython && $(PYTHON_EXECUTABLE) run_all_tests.py)
 
 mspython-wheel:
 	cd build && cmake --build . --target pythonmapscript-wheel

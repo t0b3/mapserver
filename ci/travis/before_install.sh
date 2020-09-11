@@ -11,8 +11,10 @@ sudo apt-get install --allow-unauthenticated protobuf-c-compiler libprotobuf-c0-
 sudo apt-get install --allow-unauthenticated libmono-system-drawing4.0-cil mono-mcs
 #sudo apt-get install --allow-unauthenticated php-dev
 sudo apt-get install --allow-unauthenticated libperl-dev
-sudo pip install cpp-coveralls
-sudo pip install -U -r msautotest/requirements.txt
+sudo ${PYTHON_EXECUTABLE} -m pip install pip --upgrade
+sudo ${PYTHON_EXECUTABLE} -m pip install cpp-coveralls
+sudo ${PYTHON_EXECUTABLE} -m pip install -U -r msautotest/requirements.txt
+
 export CC="ccache gcc"
 export CXX="ccache g++"
 
