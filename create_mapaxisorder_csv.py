@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 ###############################################################################
 # Project:  MapServer
 # Purpose:  Generate the list of EPSG SRS codes that need axis inversion
