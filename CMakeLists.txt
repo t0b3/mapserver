@@ -785,6 +785,13 @@ if(WITH_EXEMPI)
 endif(WITH_EXEMPI)
 
 if(WITH_PYTHON)
+
+   find_package (Python2 COMPONENTS Interpreter Development)
+   message(STATUS "Python Executable: ${PYTHON_EXECUTABLE}")   
+   
+   find_package (Python3 COMPONENTS Interpreter Development)
+   message(STATUS "Python Executable: ${PYTHON_EXECUTABLE}")    
+  
    add_subdirectory("mapscript/python")
    set(USE_PYTHON_MAPSCRIPT 1)
 endif(WITH_PYTHON)
