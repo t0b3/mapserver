@@ -20,7 +20,7 @@ if [ "$BUILD_NAME" = "PHP_7.2_WITH_ASAN" ]; then
 elif [ "$BUILD_NAME" = "PHP_7.3_WITH_PROJ7" ]; then
     mkdir ~/bin/env_python3/
     ln -s /opt/pyenv/shims/python3.6 ~/bin/env_python3/python
-    $PATH = ~/bin/env_python3/:$PATH
+    export PATH=~/bin/env_python3/:$PATH
     make cmakebuild MFLAGS="-j2" CMAKE_C_FLAGS="-O2" CMAKE_CXX_FLAGS="-O2"
     make mspython-wheel
     make -j4 test
