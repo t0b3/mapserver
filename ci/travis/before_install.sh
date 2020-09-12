@@ -12,7 +12,10 @@ sudo apt-get install --allow-unauthenticated python3-dev python3-pip python3-lxm
 sudo apt-get install --allow-unauthenticated libmono-system-drawing4.0-cil mono-mcs
 #sudo apt-get install --allow-unauthenticated php-dev
 sudo apt-get install --allow-unauthenticated libperl-dev
+
 sudo python3 -m pip install cpp-coveralls
+sudo python3 -m pip install pyflakes
+
 export CC="ccache gcc"
 export CXX="ccache g++"
 
@@ -23,7 +26,7 @@ sudo sed -i  's/peer/trust/' /etc/postgresql/10/main/pg_hba.conf
 sudo service postgresql restart 10
 
 cd msautotest
-pyflakes .
+python3 -m pyflakes .
 ./create_postgis_test_data.sh
 python -m SimpleHTTPServer &> /dev/null &
 cd ..
