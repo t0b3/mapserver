@@ -9,10 +9,14 @@ set -eu
     export CXX="ccache g++"
 #fi
 
-which python
 
+if [ "$BUILD_NAME" = "PHP_7.1" ]; then
+    export PYTHON_EXECUTABLE="python2"
+else
+    export PYTHON_EXECUTABLE="python3"
+fi
 
-sudo pip install -U -r msautotest/requirements.txt
+sudo $(PYTHON_EXECUTABLE) -m pip install -U -r msautotest/requirements.txt
 
 if [ "$BUILD_NAME" = "PHP_7.2_WITH_ASAN" ]; then
     # Force use of PROJ 4 API
@@ -24,7 +28,6 @@ if [ "$BUILD_NAME" = "PHP_7.2_WITH_ASAN" ]; then
     make -j4 asan_compatible_tests
 elif [ "$BUILD_NAME" = "PHP_7.3_WITH_PROJ7" ]; then
     export PYTHON_EXECUTABLE="python3"
-    $(PYTHON_EXECUTABLE) -m pip install -U -r msautotest/requirements.txt
     make cmakebuild MFLAGS="-j2" CMAKE_C_FLAGS="-O2" CMAKE_CXX_FLAGS="-O2"
     make mspython-wheel
     make -j4 test
