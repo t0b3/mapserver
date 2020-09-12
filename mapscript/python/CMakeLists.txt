@@ -1,6 +1,18 @@
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
-find_package(PythonInterp)
+find_package (Python COMPONENTS Interpreter Development)
+
+#if(DEFINED ENV{PY_PYTHON})
+#    if($ENV{VAR} VERSION_GREATER_EQUAL 3)
+#        find_package (Python3 COMPONENTS Interpreter Development)
+#    else()
+#        find_package (Python2 COMPONENTS Interpreter Development)
+#    endif()
+#else()
+#    find_package (Python COMPONENTS Interpreter Development)
+#endif()
+
+#find_package(PythonInterp)
 find_python_module(setuptools REQUIRED)
 
 # Python library/header finding doesn't seem to honor the python
@@ -8,30 +20,30 @@ find_python_module(setuptools REQUIRED)
 # python. We first try to find python.h and libpython.so ourselves
 # from the hints given by distutils and sys
 
-execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_inc; print(get_python_inc(True))" OUTPUT_VARIABLE PYTHON_INC OUTPUT_STRIP_TRAILING_WHITESPACE)
-execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import sys; print(sys.prefix)" OUTPUT_VARIABLE PYTHON_PREFIX OUTPUT_STRIP_TRAILING_WHITESPACE)
-execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(True))" OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
+#execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_inc; print(get_python_inc(True))" OUTPUT_VARIABLE PYTHON_INC OUTPUT_STRIP_TRAILING_WHITESPACE)
+#execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import sys; print(sys.prefix)" OUTPUT_VARIABLE PYTHON_PREFIX OUTPUT_STRIP_TRAILING_WHITESPACE)
+#execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(True))" OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-find_path(PYTHON_INCLUDE_PATH Python.h
-  HINTS ${PYTHON_INC}
-)
+#find_path(PYTHON_INCLUDE_PATH Python.h
+#  HINTS ${PYTHON_INC}
+#)
 
-find_library(PYTHON_LIBRARIES
-  NAMES python${PYTHON_VERSION_STRING} python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} python
-  HINTS ${PYTHON_PREFIX}/lib
-)
+#find_library(PYTHON_LIBRARIES
+#  NAMES python${PYTHON_VERSION_STRING} python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} python
+#  HINTS ${PYTHON_PREFIX}/lib
+#)
 
 #if that failed, fall back to the default cmake method of finding python dev files
-if(NOT PYTHON_INCLUDE_PATH OR NOT PYTHON_LIBRARIES)
-  find_package(PythonLibs)
-endif()
+#if(NOT PYTHON_INCLUDE_PATH OR NOT PYTHON_LIBRARIES)
+#  find_package(PythonLibs)
+#endif()
 
-include_directories(${PYTHON_INCLUDE_PATH})
+include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/swiginc)
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/)
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/python)
 
-if (${PYTHON_VERSION_MAJOR} VERSION_GREATER 2)
+if (${PYTHON_VERSION_MAJOR} VERSION_GREATER_EQUAL 3)
     set_property(SOURCE ../mapscript.i PROPERTY SWIG_FLAGS "-py3")
 endif ()
 
@@ -135,7 +147,7 @@ add_custom_command(
 install(  
   CODE "
   
-    SET(ENV{PYTHONPATH} \${PYTHON_SITE_PACKAGES}:\$ENV{PYTHONPATH})
+    SET(ENV{PYTHONPATH} \${PYTHON_SITELIB}:\$ENV{PYTHONPATH})
       
     if(DEFINED ENV{DESTDIR})
       SET(PYTHON_ROOT \"--root=\$ENV{DESTDIR}\")
@@ -156,4 +168,5 @@ message(STATUS "CMake Version: ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}")
 message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "Python MapScript output directory: ${OUTPUT_FOLDER}")
 message(STATUS "Python Executable: ${PYTHON_EXECUTABLE}")
-message(STATUS "Python site packages: ${PYTHON_SITE_PACKAGES}")
+message(STATUS "Python Version: ${PYTHON_VERSION}")
+message(STATUS "Python site packages: ${PYTHON_SITELIB}")

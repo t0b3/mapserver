@@ -16,6 +16,8 @@ sudo pip install cpp-coveralls
 export CC="ccache gcc"
 export CXX="ccache g++"
 
+sudo "$PYTHON_ROOT_DIR}/python" -m pip install -U -r msautotest/requirements.txt
+
 sudo sed -i  's/md5/trust/' /etc/postgresql/10/main/pg_hba.conf
 sudo sed -i  's/peer/trust/' /etc/postgresql/10/main/pg_hba.conf
 sudo service postgresql restart 10
