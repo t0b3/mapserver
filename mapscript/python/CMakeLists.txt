@@ -8,7 +8,7 @@ ENDIF()
 
 message(STATUS "PYTHON_ROOT_DIR: ${PYTHON_ROOT_DIR}")
 
-find_package (Python 
+find_package (Python REQUIRED
               COMPONENTS Interpreter Development
               HINTS ${PYTHON_ROOT_DIR}
               )

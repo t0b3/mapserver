@@ -42,7 +42,7 @@ clone_depth: 5
 init:
   - ps: |
         if ($env:APPVEYOR_REPO_TAG -ne $TRUE) {
-            if ("c:/python27-x64/python.exe","c:/python36-x64/python.exe" -contains $env:PYTHON_ROOT_DIR/python.exe -eq $TRUE) {
+            if ("c:/python27-x64","c:/python36-x64" -contains $env:PYTHON_ROOT_DIR -eq $TRUE) {
                 Write-Host "Skipping build, not a tagged release."
                 Exit-AppVeyorBuild
             }
@@ -118,11 +118,11 @@ artifacts:
 deploy_script:
   - ps: |
         if ($env:APPVEYOR_REPO_TAG -ne $TRUE -or ($env:APPVEYOR_REPO_TAG_NAME -cSplit "-").Count -ne 4) { return }
-        if ($env:PYTHON_ROOT_DIR -eq "c:/python36-x64/python.exe") {
+        if ($env:PYTHON_ROOT_DIR -eq "c:/python36-x64") {
             Write-Host "Deploying Python source distribution to PyPI. Tag $env:APPVEYOR_REPO_TAG_NAME"
             cd $env:APPVEYOR_BUILD_FOLDER\build\mapscript\python\Release
-                & $env:PYTHON_ROOT_DIR setup.py sdist
+                & "$env:PYTHON_ROOT_DIR/python" setup.py sdist
         }
         Write-Host "Deploying Python Wheel to PyPI. Tag $env:APPVEYOR_REPO_TAG_NAME"
-        & $env:PYTHON_ROOT_DIR -W ignore -m pip --disable-pip-version-check install twine
-        & $env:PYTHON_ROOT_DIR -m twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing $env:APPVEYOR_BUILD_FOLDER\build\mapscript\python\Release\dist\*
+        & "$env:PYTHON_ROOT_DIR/python" -W ignore -m pip --disable-pip-version-check install twine
+        & "$env:PYTHON_ROOT_DIR/python" -m twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing $env:APPVEYOR_BUILD_FOLDER\build\mapscript\python\Release\dist\*
