@@ -81,7 +81,8 @@ add_custom_command(
     WORKING_DIRECTORY ${OUTPUT_FOLDER}
     COMMAND ${PYTHON_EXECUTABLE} -m pip install pip --upgrade
     COMMAND ${PYTHON_EXECUTABLE} -m pip install virtualenv
-    COMMAND ${PYTHON_EXECUTABLE} -m virtualenv mapscriptvenv    COMMAND ${PYTHON_VENV_SCRIPTS}/pip install -r ${PROJECT_SOURCE_DIR}/mapscript/python/requirements-dev.txt > requires.log
+    COMMAND ${PYTHON_EXECUTABLE} -m virtualenv mapscriptvenv
+    COMMAND ${PYTHON_VENV_SCRIPTS}/pip install -r ${PROJECT_SOURCE_DIR}/mapscript/python/requirements-dev.txt > requires.log
     COMMENT "Creating a Python virtual environment and installing the required packages"
 )
 
