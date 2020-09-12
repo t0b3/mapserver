@@ -63,7 +63,7 @@ def test_xmp():
     resultfile = get_relpath_to_this('result/test_xmp.png')
     img.save(resultfile, map )
 
-    f = open(resultfile, 'rb')
+    f = open(resultfile, 'r')
     data = f.read()
     f.close()
 
