@@ -82,9 +82,9 @@ endif()
 
 if(WIN32)
     # Windows venv binaries are in a different location than Linux
-    set(PYTHON_VENV_SCRIPTS ${OUTPUT_FOLDER}/mapscriptvenv/Scripts)
+    set(Python_VENV_SCRIPTS ${OUTPUT_FOLDER}/mapscriptvenv/Scripts)
 else()
-    set(PYTHON_VENV_SCRIPTS ${OUTPUT_FOLDER}/mapscriptvenv/bin)
+    set(Python_VENV_SCRIPTS ${OUTPUT_FOLDER}/mapscriptvenv/bin)
 endif()
 
 add_custom_target(
