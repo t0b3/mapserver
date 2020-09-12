@@ -43,7 +43,7 @@ include_directories(${PROJECT_SOURCE_DIR}/mapscript/swiginc)
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/)
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/python)
 
-if (${PYTHON_VERSION_MAJOR} VERSION_GREATER_EQUAL 3)
+if (${PYTHON_VERSION_MAJOR} VERSION_GREATER 2)
     set_property(SOURCE ../mapscript.i PROPERTY SWIG_FLAGS "-py3")
 endif ()
 
