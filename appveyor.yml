@@ -21,14 +21,14 @@ environment:
   VS_VERSION: Visual Studio 15 2017
   matrix:
   - platform: x86
-    PYTHON_ROOT_DIR: c:/python27
+    Python_ROOT_DIR: c:/python27
     SWIG_VER: swigwin-3.0.12
   - platform: x64
-    PYTHON_ROOT_DIR: c:/python27-x64
+    Python_ROOT_DIR: c:/python27-x64
   - platform: x64
-    PYTHON_ROOT_DIR: c:/python36-x64
+    Python_ROOT_DIR: c:/python36-x64
   - platform: x64
-    PYTHON_ROOT_DIR: c:/python37-x64
+    Python_ROOT_DIR: c:/python37-x64
 
 services:
   - mssql2017
@@ -42,7 +42,7 @@ clone_depth: 5
 init:
   - ps: |
         if ($env:APPVEYOR_REPO_TAG -ne $TRUE) {
-            if ("c:/python27-x64","c:/python36-x64" -contains $env:PYTHON_ROOT_DIR -eq $TRUE) {
+            if ("c:/python27-x64","c:/python36-x64" -contains $env:Python_ROOT_DIR -eq $TRUE) {
                 Write-Host "Skipping build, not a tagged release."
                 Exit-AppVeyorBuild
             }
@@ -92,15 +92,15 @@ before_test:
   - cd %BUILD_FOLDER%/msautotest
   - set PROJ_LIB=%SDK_BIN%/proj6/share
   - "./mssql/create_mssql_db.bat"
-  - "%PYTHON_ROOT_DIR%/python -m pip install -U -r requirements.txt"
-  - "%PYTHON_ROOT_DIR%/python -m pip install --no-index --find-links=file://%BUILD_FOLDER%/build/mapscript/python/Release/dist mapscript"
+  - "%Python_ROOT_DIR%/python -m pip install -U -r requirements.txt"
+  - "%Python_ROOT_DIR%/python -m pip install --no-index --find-links=file://%BUILD_FOLDER%/build/mapscript/python/Release/dist mapscript"
 
 test_script:
   - set PROJ_LIB=%SDK_BIN%/proj/SHARE
   - cd %BUILD_FOLDER%/msautotest/mssql
-  - "%PYTHON_ROOT_DIR%/python run_test.py"
+  - "%Python_ROOT_DIR%/python run_test.py"
   - cd %BUILD_FOLDER%/msautotest/mspython
-  - "%PYTHON_ROOT_DIR%/python run_all_tests.py"
+  - "%Python_ROOT_DIR%/python run_all_tests.py"
 
 after_test:
   - cd %BUILD_FOLDER%
@@ -118,11 +118,11 @@ artifacts:
 deploy_script:
   - ps: |
         if ($env:APPVEYOR_REPO_TAG -ne $TRUE -or ($env:APPVEYOR_REPO_TAG_NAME -cSplit "-").Count -ne 4) { return }
-        if ($env:PYTHON_ROOT_DIR -eq "c:/python36-x64") {
+        if ($env:Python_ROOT_DIR -eq "c:/python36-x64") {
             Write-Host "Deploying Python source distribution to PyPI. Tag $env:APPVEYOR_REPO_TAG_NAME"
             cd $env:APPVEYOR_BUILD_FOLDER\build\mapscript\python\Release
-                & "$env:PYTHON_ROOT_DIR/python" setup.py sdist
+                & "$env:Python_ROOT_DIR/python" setup.py sdist
         }
         Write-Host "Deploying Python Wheel to PyPI. Tag $env:APPVEYOR_REPO_TAG_NAME"
-        & "$env:PYTHON_ROOT_DIR/python" -W ignore -m pip --disable-pip-version-check install twine
-        & "$env:PYTHON_ROOT_DIR/python" -m twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing $env:APPVEYOR_BUILD_FOLDER\build\mapscript\python\Release\dist\*
+        & "$env:Python_ROOT_DIR/python" -W ignore -m pip --disable-pip-version-check install twine
+        & "$env:Python_ROOT_DIR/python" -m twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing $env:APPVEYOR_BUILD_FOLDER\build\mapscript\python\Release\dist\*
