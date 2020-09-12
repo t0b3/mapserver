@@ -1,17 +1,11 @@
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
 
-# If PYTHON_ROOT_DIR was defined in the environment, use it.
-#IF(NOT PYTHON_ROOT_DIR AND NOT $ENV{PYTHON_ROOT_DIR} STREQUAL "")
-#  SET(PYTHON_ROOT_DIR $ENV{PYTHON_ROOT_DIR})
-#ENDIF()
-
-message(STATUS "PYTHON_ROOT_DIR: ${PYTHON_ROOT_DIR}")
-
 find_package (Python REQUIRED
               COMPONENTS Interpreter Development
               )
 message(STATUS "Python_FOUND: ${Python_FOUND}")
+message(STATUS "PYTHON_VERSION_MAJOR: ${PYTHON_VERSION_MAJOR}")
 
 #if(DEFINED ENV{PY_PYTHON})
 #    if($ENV{VAR} VERSION_GREATER_EQUAL 3)
@@ -24,7 +18,7 @@ message(STATUS "Python_FOUND: ${Python_FOUND}")
 #endif()
 
 #find_package(PythonInterp)
-find_python_module(setuptools REQUIRED)
+#find_python_module(setuptools REQUIRED)
 
 # Python library/header finding doesn't seem to honor the python
 # interpreter that was found beforehand, and defaults to the system
