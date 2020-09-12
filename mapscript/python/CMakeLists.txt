@@ -6,10 +6,13 @@ IF(NOT PYTHON_ROOT_DIR AND NOT $ENV{PYTHON_ROOT_DIR} STREQUAL "")
   SET(PYTHON_ROOT_DIR $ENV{PYTHON_ROOT_DIR})
 ENDIF()
 
+message(STATUS "PYTHON_ROOT_DIR: ${PYTHON_ROOT_DIR}")
+
 find_package (Python 
               COMPONENTS Interpreter Development
               HINTS ${PYTHON_ROOT_DIR}
               )
+message(STATUS "Python_FOUND: ${Python_FOUND}")
 
 #if(DEFINED ENV{PY_PYTHON})
 #    if($ENV{VAR} VERSION_GREATER_EQUAL 3)
