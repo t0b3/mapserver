@@ -41,7 +41,7 @@ sld-testcase:
 	cd msautotest/sld  && rm -f result/* && export PATH=$(BUILDPATH):$(PATH) && (./run_test.py $(AUTOTEST_OPTS) || /bin/true)
 
 mspython-testcase:
-	test -f "$(PYTHON_MAPSCRIPT_PATH)/_mapscript.so" && (export PYTHONPATH="../../$(PYTHON_MAPSCRIPT_PATH)" && cd msautotest/mspython && $(PYTHON_ROOT_DIR)/python run_all_tests.py)
+	test -f "$(PYTHON_MAPSCRIPT_PATH)/_mapscript.so" && (export PYTHONPATH="../../$(PYTHON_MAPSCRIPT_PATH)" && cd msautotest/mspython && python3 run_all_tests.py)
 
 mspython-wheel:
 	cd build && cmake --build . --target pythonmapscript-wheel
