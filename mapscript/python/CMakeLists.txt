@@ -4,44 +4,6 @@ include(${SWIG_USE_FILE})
 find_package (Python REQUIRED
               COMPONENTS Interpreter Development
               )
-message(STATUS "Python_FOUND: ${Python_FOUND}")
-message(STATUS "Python_VERSION_MAJOR: ${Python_VERSION_MAJOR}")
-
-#if(DEFINED ENV{PY_PYTHON})
-#    if($ENV{VAR} VERSION_GREATER_EQUAL 3)
-#        find_package (Python3 COMPONENTS Interpreter Development)
-#    else()
-#        find_package (Python2 COMPONENTS Interpreter Development)
-#    endif()
-#else()
-#    find_package (Python COMPONENTS Interpreter Development)
-#endif()
-
-#find_package(PythonInterp)
-#find_python_module(setuptools REQUIRED)
-
-# Python library/header finding doesn't seem to honor the python
-# interpreter that was found beforehand, and defaults to the system
-# python. We first try to find python.h and libpython.so ourselves
-# from the hints given by distutils and sys
-
-#execute_process (COMMAND ${Python_EXECUTABLE} -c "from distutils.sysconfig import get_python_inc; print(get_python_inc(True))" OUTPUT_VARIABLE PYTHON_INC OUTPUT_STRIP_TRAILING_WHITESPACE)
-#execute_process (COMMAND ${Python_EXECUTABLE} -c "import sys; print(sys.prefix)" OUTPUT_VARIABLE PYTHON_PREFIX OUTPUT_STRIP_TRAILING_WHITESPACE)
-#execute_process (COMMAND ${Python_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(True))" OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-#find_path(PYTHON_INCLUDE_PATH Python.h
-#  HINTS ${Python_INC}
-#)
-
-#find_library(PYTHON_LIBRARIES
-#  NAMES python${Python_VERSION_STRING} python${Python_VERSION_MAJOR}.${Python_VERSION_MINOR} python
-#  HINTS ${Python_PREFIX}/lib
-#)
-
-#if that failed, fall back to the default cmake method of finding python dev files
-#if(NOT PYTHON_INCLUDE_PATH OR NOT PYTHON_LIBRARIES)
-#  find_package(PythonLibs)
-#endif()
 
 include_directories(${Python_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/swiginc)
