@@ -2,15 +2,14 @@ find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
 
 # If PYTHON_ROOT_DIR was defined in the environment, use it.
-IF(NOT PYTHON_ROOT_DIR AND NOT $ENV{PYTHON_ROOT_DIR} STREQUAL "")
-  SET(PYTHON_ROOT_DIR $ENV{PYTHON_ROOT_DIR})
-ENDIF()
+#IF(NOT PYTHON_ROOT_DIR AND NOT $ENV{PYTHON_ROOT_DIR} STREQUAL "")
+#  SET(PYTHON_ROOT_DIR $ENV{PYTHON_ROOT_DIR})
+#ENDIF()
 
 message(STATUS "PYTHON_ROOT_DIR: ${PYTHON_ROOT_DIR}")
 
 find_package (Python REQUIRED
               COMPONENTS Interpreter Development
-              HINTS ${PYTHON_ROOT_DIR}
               )
 message(STATUS "Python_FOUND: ${Python_FOUND}")
 
