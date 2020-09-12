@@ -1,6 +1,15 @@
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
-find_package (Python COMPONENTS Interpreter Development)
+
+# If PYTHON_ROOT_DIR was defined in the environment, use it.
+IF(NOT PYTHON_ROOT_DIR AND NOT $ENV{PYTHON_ROOT_DIR} STREQUAL "")
+  SET(PYTHON_ROOT_DIR $ENV{PYTHON_ROOT_DIR})
+ENDIF()
+
+find_package (Python 
+              COMPONENTS Interpreter Development
+              HINTS ${PYTHON_ROOT_DIR}
+              )
 
 #if(DEFINED ENV{PY_PYTHON})
 #    if($ENV{VAR} VERSION_GREATER_EQUAL 3)
@@ -43,7 +52,7 @@ include_directories(${PROJECT_SOURCE_DIR}/mapscript/swiginc)
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/)
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/python)
 
-if (${PYTHON_VERSION_MAJOR} VERSION_GREATER 2)
+if (${PYTHON_VERSION_MAJOR} GREATER_EQUAL 3)
     set_property(SOURCE ../mapscript.i PROPERTY SWIG_FLAGS "-py3")
 endif ()
 
