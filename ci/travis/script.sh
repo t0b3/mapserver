@@ -16,8 +16,6 @@ else
     export PYTHON_EXECUTABLE="python3"
 fi
 
-echo $PYTHON_EXECUTABLE
-
 sudo $PYTHON_EXECUTABLE -m pip install -U -r msautotest/requirements.txt
 
 if [ "$BUILD_NAME" = "PHP_7.2_WITH_ASAN" ]; then
