@@ -270,6 +270,12 @@ int main(int argc, char *argv[])
 
 #ifdef USE_FASTCGI
     if( mapserv->map->debug ) {
+
+      const char *pszCurlCABundle = NULL;
+
+      pszCurlCABundle = getenv("CURL_CA_BUNDLE");
+      msDebug("Using CURL_CA_BUNDLE=%s\n", pszCurlCABundle);
+
       static int nRequestCounter = 1;
 
       msDebug( "CGI Request %d on process %d\n", nRequestCounter, getpid() );
