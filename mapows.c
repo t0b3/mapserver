@@ -71,8 +71,8 @@ void msOWSClearRequestObj(owsRequestObj *ows_request)
 {
   msFree(ows_request->enabled_layers);
   msFree(ows_request->layerwmsfilterindex);
-//  msFree(ows_request->service);
-//  msFree(ows_request->version);
+  msFree(ows_request->service);
+  msFree(ows_request->version);
   msFree(ows_request->request);
   if(ows_request->document) {
 #if defined(USE_LIBXML2)
@@ -177,13 +177,13 @@ static int msOWSPreParseRequest(cgiRequestObj *request,
     /* Get service, version and request from root */
     xmlChar* serviceTmp = xmlGetProp(root, BAD_CAST "service");
     if (serviceTmp != NULL) {
-        ows_request->service = (char *)serviceTmp;
+        ows_request->service = msStrdup((char *)serviceTmp);
         xmlFree(serviceTmp);
     }
 
     xmlChar* versionTmp = xmlGetProp(root, BAD_CAST "version");
     if (versionTmp != NULL) {
-        ows_request->version = (char *)versionTmp;
+        ows_request->version = msStrdup((char *)versionTmp);
         xmlFree(versionTmp);
     }
 
