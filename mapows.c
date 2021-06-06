@@ -181,6 +181,8 @@ static int msOWSPreParseRequest(cgiRequestObj *request,
     if ((tmp = (char*)xmlGetProp(root, BAD_CAST "version")) != NULL)
         ows_request->version = msStrdup(tmp);
 
+    msFree(tmp);
+
     ows_request->request = msStrdup((char *) root->name);
 
 #else
