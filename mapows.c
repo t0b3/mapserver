@@ -175,13 +175,13 @@ static int msOWSPreParseRequest(cgiRequestObj *request,
     }
 
     /* Get service, version and request from root */
-    char* tmp = NULL;
-    if ((tmp = (char*)xmlGetProp(root, BAD_CAST "service")) != NULL)
+    xmlChar* tmp = NULL;
+    if ((tmp = xmlGetProp(root, BAD_CAST "service")) != NULL)
         ows_request->service = msStrdup(tmp);
-    if ((tmp = (char*)xmlGetProp(root, BAD_CAST "version")) != NULL)
+    if ((tmp = xmlGetProp(root, BAD_CAST "version")) != NULL)
         ows_request->version = msStrdup(tmp);
 
-    msFree(tmp);
+    xmlFree(tmp);
 
     ows_request->request = msStrdup((char *) root->name);
 
