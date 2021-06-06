@@ -71,8 +71,8 @@ void msOWSClearRequestObj(owsRequestObj *ows_request)
 {
   msFree(ows_request->enabled_layers);
   msFree(ows_request->layerwmsfilterindex);
-  msFree(ows_request->service);
-  msFree(ows_request->version);
+//  msFree(ows_request->service);
+//  msFree(ows_request->version);
   msFree(ows_request->request);
   if(ows_request->document) {
 #if defined(USE_LIBXML2)
