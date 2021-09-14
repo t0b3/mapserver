@@ -202,7 +202,7 @@ mapObj *msCGILoadMap(mapservObj *mapserv)
         msSetError(MS_WEBERR, "CGI variable \"map\" not found in environment and this server is not configured for full paths.", "msCGILoadMap()");
         return NULL;
       }
-      ms_mapfile = map_value;
+      //ms_mapfile = map_value;
     }
   }
 
@@ -1844,7 +1844,7 @@ int msCGIDispatchRequest(mapservObj *mapserv)
   }
 }
 
-int msCGIHandler(const char *query_string, void **out_buffer, size_t *buffer_length)
+int msCGIHandlerX(const char *query_string, void **out_buffer, size_t *buffer_length)
 {
   int x,m=0;
   struct mstimeval execstarttime = {0}, execendtime = {0};

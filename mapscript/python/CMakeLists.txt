@@ -9,7 +9,7 @@ include_directories(${PROJECT_SOURCE_DIR}/mapscript/)
 include_directories(${PROJECT_SOURCE_DIR}/mapscript/python)
 
 if (${Python_VERSION_MAJOR} GREATER_EQUAL 3)
-    set_property(SOURCE ../mapscript.i PROPERTY SWIG_FLAGS "-py3")
+    set_property(SOURCE ../mapscript.i PROPERTY SWIG_FLAGS "-py3") # "-annotations"
 endif ()
 
 if (${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} VERSION_GREATER 3.7)

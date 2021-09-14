@@ -6393,7 +6393,7 @@ mapObj *msLoadMap(const char *filename, const char *new_mappath)
     }
   } else { /* check the default */
     if(msEvalRegex(MS_DEFAULT_MAPFILE_PATTERN, filename) != MS_TRUE) {
-      msSetError(MS_REGEXERR, "MS_DEFAULT_MAPFILE_PATTERN validation failed." , "msLoadMap()");
+      msSetError(MS_REGEXERR, "MS_DEFAULT_MAPFILE_PATTERN validation failed. (%s)" , "msLoadMap()", filename);
       return(NULL);
     }
   }

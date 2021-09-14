@@ -724,6 +724,10 @@ static void outputTemplate(const char *directory, const char *filename, const js
   } catch(const inja::RenderError &e) {
     outputError(OGCAPI_CONFIG_ERROR, "Template rendering error. " + std::string(e.what()) + " (" + std::string(filename) + ").");
     return;
+  }
+  catch (const inja::InjaError& e) {
+      outputError(OGCAPI_CONFIG_ERROR, "InjaError error. " + std::string(e.what()) + " (" + std::string(filename) + ").");
+      return;
   } catch(...) {
     outputError(OGCAPI_SERVER_ERROR, "General template handling error.");
     return;
