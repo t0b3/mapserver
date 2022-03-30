@@ -3958,7 +3958,10 @@ int loadLayer(layerObj *layer, mapObj *map)
         if (msGrowLayerClasses(layer) == NULL)
           return(-1);
         initClass(layer->class[layer->numclasses]);
-        if(loadClass(layer->class[layer->numclasses], layer) == -1) return(-1);
+        if(loadClass(layer->class[layer->numclasses], layer) == -1) {
+            msFree(layer->class[layer->numclasses]);
+            return(-1);
+        }
         layer->numclasses++;
         break;
       case(CLUSTER):
