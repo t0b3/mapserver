@@ -49,7 +49,7 @@ class MapOutputFormatTestCase(MapTestCase):
         assert self.map.numoutputformats == num + 1
         # assert new_format.refcount == 2, new_format.refcount
         self.map.selectOutputFormat('gtiff')
-        self.map.save('testAppendNewOutputFormat.map')
+        #self.map.save('testAppendNewOutputFormat.map')
         self.map.getLayerByName('INLINE-PIXMAP-RGBA').status = mapscript.MS_ON
         imgobj = self.map.draw()
         filename = 'testAppendNewOutputFormat.tif'
