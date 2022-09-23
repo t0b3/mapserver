@@ -43,7 +43,7 @@ class MapOutputFormatTestCase(MapTestCase):
     def testAppendNewOutputFormat(self):
         """test that a new output format can be created on-the-fly"""
         num = self.map.numoutputformats
-        new_format = mapscript.outputFormatObj('GDAL/GTiff', 'gtiffx')
+        new_format = mapscript.outputFormatObj('GDAL/GTiff', 'gtiff')
         # assert new_format.refcount == 1, new_format.refcount
         self.map.appendOutputFormat(new_format)
         assert self.map.numoutputformats == num + 1
@@ -58,7 +58,7 @@ class MapOutputFormatTestCase(MapTestCase):
     def testRemoveOutputFormat(self):
         """testRemoveOutputFormat may fail depending on GD options"""
         num = self.map.numoutputformats
-        new_format = mapscript.outputFormatObj('GDAL/GTiff', 'gtiffx')
+        new_format = mapscript.outputFormatObj('GDAL/GTiff', 'gtiff')
         self.map.appendOutputFormat(new_format)
         assert self.map.numoutputformats == num + 1
         # assert new_format.refcount == 2, new_format.refcount
