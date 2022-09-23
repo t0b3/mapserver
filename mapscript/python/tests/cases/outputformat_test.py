@@ -43,12 +43,12 @@ class MapOutputFormatTestCase(MapTestCase):
     def testAppendNewOutputFormat(self):
         """test that a new output format can be created on-the-fly"""
         num = self.map.numoutputformats
-        new_format = mapscript.outputFormatObj('GDAL/GTiff', 'gtiff')
+        new_format = mapscript.outputFormatObj('GDAL/GTiff', 'gtiffx')
         # assert new_format.refcount == 1, new_format.refcount
         self.map.appendOutputFormat(new_format)
         assert self.map.numoutputformats == num + 1
         # assert new_format.refcount == 2, new_format.refcount
-        self.map.selectOutputFormat('gtiff')
+        self.map.selectOutputFormat('gtiffx')
         #self.map.save('testAppendNewOutputFormat.map')
         self.map.getLayerByName('INLINE-PIXMAP-RGBA').status = mapscript.MS_ON
         imgobj = self.map.draw()
@@ -58,15 +58,15 @@ class MapOutputFormatTestCase(MapTestCase):
     def testRemoveOutputFormat(self):
         """testRemoveOutputFormat may fail depending on GD options"""
         num = self.map.numoutputformats
-        new_format = mapscript.outputFormatObj('GDAL/GTiff', 'gtiff')
+        new_format = mapscript.outputFormatObj('GDAL/GTiff', 'gtiffx')
         self.map.appendOutputFormat(new_format)
         assert self.map.numoutputformats == num + 1
         # assert new_format.refcount == 2, new_format.refcount
-        assert self.map.removeOutputFormat('gtiff') == mapscript.MS_SUCCESS
+        assert self.map.removeOutputFormat('gtiffx') == mapscript.MS_SUCCESS
         # assert new_format.refcount == 1, new_format.refcount
         assert self.map.numoutputformats == num
         self.assertRaises(mapscript.MapServerError,
-                          self.map.selectOutputFormat, 'gtiff')
+                          self.map.selectOutputFormat, 'gtiffx')
         self.map.selectOutputFormat('GTiff')
         assert self.map.outputformat.mimetype == 'image/tiff'
 
