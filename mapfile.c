@@ -5357,14 +5357,10 @@ char* msWriteQueryMapToString(queryMapObj *querymap)
 void initWeb(webObj *web)
 {
   web->template = NULL;
-  web->header = NULL;
-  web->footer = NULL;
-  web->error = NULL;
-  web->empty = NULL;
-  web->mintemplate = NULL;
-  web->maxtemplate = NULL;
-  web->minscaledenom = -1;
-  web->maxscaledenom = -1;
+  web->header = web->footer = NULL;
+  web->error =  web->empty = NULL;
+  web->mintemplate = web->maxtemplate = NULL;
+  web->minscaledenom = web->maxscaledenom = -1;
   web->imagepath = msStrdup("");
   web->temppath = NULL;
   web->imageurl = msStrdup("");
@@ -5402,10 +5398,10 @@ static void writeWeb(FILE *stream, int indent, webObj *web)
   indent++;
   writeBlockBegin(stream, indent, "WEB");
   writeString(stream, indent, "BROWSEFORMAT", "text/html", web->browseformat);
-  //writeString(stream, indent, "EMPTY", NULL, web->empty);
-  //writeString(stream, indent, "ERROR", NULL, web->error);
+  if(web->empty) writeString(stream, indent, "EMPTY", NULL, web->empty);
+  if(web->error) writeString(stream, indent, "ERROR", NULL, web->error);
   writeString(stream, indent, "FOOTER", NULL, web->footer);
-  //writeString(stream, indent, "HEADER", NULL, web->header);
+  if(web->header) writeString(stream, indent, "HEADER", NULL, web->header);
   writeString(stream, indent, "IMAGEPATH", "", web->imagepath);
   writeString(stream, indent, "TEMPPATH", NULL, web->temppath);
   writeString(stream, indent, "IMAGEURL", "", web->imageurl);
