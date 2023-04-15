@@ -1257,20 +1257,26 @@ static int msLoadProjectionStringEPSGLike(projectionObj *p, const char *value,
     if( next_sep != NULL )
         code = next_sep + 1;
 
+    p->args = (char**)msSmallMalloc(sizeof(char*) * 2);
+
+#if PROJ_VERSION_MAJOR < 6
     buffer_size = 10 + strlen(code) + 1;
     init_string = (char*)msSmallMalloc(buffer_size);
 
     /* translate into PROJ.4 format. */
     snprintf( init_string, buffer_size, "init=epsg:%s", code );
-
-    p->args = (char**)msSmallMalloc(sizeof(char*) * 2);
     p->args[0] = init_string;
+#else
+    p->args[0] = msStrdup(value);
+#endif
+
     p->numargs = 1;
 
-    if( bFollowEPSGAxisOrder && msIsAxisInverted(atoi(code))) {
-      p->args[1] = msStrdup("+epsgaxis=ne");
-      p->numargs = 2;
+    if (bFollowEPSGAxisOrder && msIsAxisInverted(atoi(code))) {
+        p->args[1] = msStrdup("+epsgaxis=ne");
+        p->numargs = 2;
     }
+
 
     return 0;
 }
@@ -1371,15 +1377,31 @@ int msLoadProjectionCodeString(projectionObj* p, const char* value) {
       return -1;
   }
 
+  p->args = (char**)msSmallMalloc(sizeof(char*));
+
   const size_t buffer_size = 5 + strlen(value) + 1;
   char* init_string = (char*)msSmallMalloc(buffer_size);
 
   /* translate into PROJ format. */
   snprintf(init_string, buffer_size, "init=%s:%s", papszList[0], papszList[1]);
-  
+
   p->args = (char**)msSmallMalloc(sizeof(char*));
   p->args[0] = init_string;
   p->numargs = 1;
+
+// can't use the following if we still require custom projections in their own files
+//#if PROJ_VERSION_MAJOR < 6
+//  const size_t buffer_size = 5 + strlen(value) + 1;
+//  char* init_string = (char*)msSmallMalloc(buffer_size);
+//
+//  /* translate into PROJ format. */
+//  snprintf(init_string, buffer_size, "init=%s:%s", papszList[0], papszList[1]);
+//
+//  p->args[0] = init_string;
+//#else
+//  p->args[0] = msStrdup(value);
+//#endif
+//  p->numargs = 1;
 
   msFreeCharArray(papszList, num_params);
 
@@ -1423,6 +1445,7 @@ int msLoadProjectionString(projectionObj *p, const char *value)
     p->numargs = 1;
   } else if (msLoadProjectionStringEPSGLike(p, value, "EPSG:", MS_FALSE) == 0 ) {
    /* Assume lon/lat ordering. Use msLoadProjectionStringEPSG() if wanting to follow EPSG axis */
+  } else if (msLoadProjectionStringEPSGLike(p, value, "ESRI:", MS_TRUE) == 0) {
   } else if (msLoadProjectionStringEPSGLike(p, value, "urn:ogc:def:crs:EPSG:", MS_TRUE) == 0 ) {
   } else if (msLoadProjectionStringEPSGLike(p, value, "urn:EPSG:geographicCRS:", MS_TRUE) == 0 ) {
   } else if (msLoadProjectionStringEPSGLike(p, value, "urn:x-ogc:def:crs:EPSG:", MS_TRUE) == 0 ) {
