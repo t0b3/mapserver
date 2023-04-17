@@ -1272,11 +1272,10 @@ static int msLoadProjectionStringEPSGLike(projectionObj *p, const char *value,
 
     p->numargs = 1;
 
-    if (bFollowEPSGAxisOrder && msIsAxisInverted(atoi(code))) {
-        p->args[1] = msStrdup("+epsgaxis=ne");
-        p->numargs = 2;
+    if(bFollowEPSGAxisOrder && msIsAxisInverted(atoi(code))) {
+      p->args[1] = msStrdup("+epsgaxis=ne");
+      p->numargs = 2;
     }
-
 
     return 0;
 }
@@ -1377,8 +1376,6 @@ int msLoadProjectionCodeString(projectionObj* p, const char* value) {
       return -1;
   }
 
-  p->args = (char**)msSmallMalloc(sizeof(char*));
-
   const size_t buffer_size = 5 + strlen(value) + 1;
   char* init_string = (char*)msSmallMalloc(buffer_size);
 
@@ -1390,6 +1387,7 @@ int msLoadProjectionCodeString(projectionObj* p, const char* value) {
   p->numargs = 1;
 
 // can't use the following if we still require custom projections in their own files
+// p->args = (char**)msSmallMalloc(sizeof(char*));
 //#if PROJ_VERSION_MAJOR < 6
 //  const size_t buffer_size = 5 + strlen(value) + 1;
 //  char* init_string = (char*)msSmallMalloc(buffer_size);
