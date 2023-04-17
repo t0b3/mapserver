@@ -1242,8 +1242,6 @@ static int msLoadProjectionStringEPSGLike(projectionObj *p, const char *value,
                                           const char* pszPrefix,
                                           int bFollowEPSGAxisOrder)
 {
-    size_t buffer_size = 0;
-    char *init_string =  NULL;
     const char *code;
     const char *next_sep;
     size_t prefix_len;
@@ -1260,6 +1258,8 @@ static int msLoadProjectionStringEPSGLike(projectionObj *p, const char *value,
     p->args = (char**)msSmallMalloc(sizeof(char*) * 2);
 
 #if PROJ_VERSION_MAJOR < 6
+    size_t buffer_size = 0;
+    char* init_string = NULL;
     buffer_size = 10 + strlen(code) + 1;
     init_string = (char*)msSmallMalloc(buffer_size);
 
