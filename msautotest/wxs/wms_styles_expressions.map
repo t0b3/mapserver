@@ -246,5 +246,19 @@ MAP
             WIDTH 1
         END
       END
-    END 
+    END
+    
+    # negative expressions
+    LAYER
+      NAME "Test18"    
+      TYPE POINT
+      CLASS
+        EXPRESSION ( [FID] <> 1 AND [FID] <> 10 )
+        STYLE
+            COLOR 220 0 0
+            WIDTH 1
+        END
+      END
+    END
+    
 END
