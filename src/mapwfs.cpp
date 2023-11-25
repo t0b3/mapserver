@@ -295,26 +295,27 @@ static void msWFSPrintRequestCap(const char *request, const char *script_url,
 
 /* msWFSLocateSRSInList()
 **
-** Utility function to check if a space separated list contains  the one passed
+** Utility function to check if a space separated list contains the one passed
 *in argument.
-**  The list comes normaly from ows_srs metadata, and is expected to use the
+**  The list comes normally from ows_srs metadata, and is expected to use the
 *simple EPSG notation
 ** (EPSG:4326 ESPG:42304 ...). The srs comes from the query string and can
 *either
 ** be of simple EPSG format or using gc:def:crs:EPSG:xxx format
+* Custom authorities are also allowed in the form AUTH:XXXX, note these checks are case-sensitive
 */
 int msWFSLocateSRSInList(const char *pszList, const char *srs) {
   int nTokens, i;
   char **tokens = NULL;
   int bFound = MS_FALSE;
   char epsg_string[100];
-  const char *code;
+  const char *code = NULL;
 
   if (!pszList || !srs)
     return MS_FALSE;
 
   if (strncasecmp(srs, "EPSG:", 5) == 0)
-    code = srs + 5;
+    code = srs + 5; // TODO if this is not case-sensitive then we don't need this line
   else if (strncasecmp(srs, "urn:ogc:def:crs:EPSG:", 21) == 0) {
     if (srs[21] == ':')
       code = srs + 21;
@@ -325,17 +326,21 @@ int msWFSLocateSRSInList(const char *pszList, const char *srs) {
       code++;
     if (*code == ':')
       code++;
-  } else if (strncasecmp(srs, "urn:EPSG:geographicCRS:", 23) == 0)
+  } else if (strncasecmp(srs, "urn:EPSG:geographicCRS:", 23) == 0) {
     code = srs + 23;
-  else
-    return MS_FALSE;
+  } else {
+    // allow for matching a custom authority and code in the list
+    // by checking the raw value
+    snprintf(epsg_string, sizeof(epsg_string), "%s", srs);
+  }
 
-  snprintf(epsg_string, sizeof(epsg_string), "EPSG:%s", code);
-
+  if (code) {
+    snprintf(epsg_string, sizeof(epsg_string), "EPSG:%s", code);
+  }
   tokens = msStringSplit(pszList, ' ', &nTokens);
   if (tokens && nTokens > 0) {
     for (i = 0; i < nTokens; i++) {
-      if (strcasecmp(tokens[i], epsg_string) == 0) {
+      if (strcasecmp(tokens[i], epsg_string) == 0) { // TOCHECK - should this be case-sensitive?
         bFound = MS_TRUE;
         break;
       }
@@ -426,8 +431,8 @@ static int msWFSGetFeatureApplySRS(mapObj *map, const char *srs,
         msFree(pszLayerSRS);
     }
   } else { /*srs is given so it should be valid for all layers*/
-    /*get all the srs defined at the map level and check them aginst the srsName
-      passed as argument*/
+    /*get all the srs defined at the map level and check them against the
+      srsName passed as argument*/
     msFree(pszMapSRS);
     msOWSGetEPSGProj(&(map->projection), &(map->web.metadata), "FO", MS_FALSE,
                      &pszMapSRS);

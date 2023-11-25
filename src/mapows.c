@@ -1060,6 +1060,13 @@ void msOWSGetEPSGProj(projectionObj *proj, hashTableObj *metadata,
               strncasecmp(proj->args[0], "AUTO2:", 6) == 0)) {
     *epsgCode = msStrdup(proj->args[0]);
     return;
+  } else if (proj && proj->numargs > 0 &&
+             (value = strstr(proj->args[0], "init=")) != NULL) {
+    // allow for a custom authority and code
+    *epsgCode = msSmallMalloc((strlen(value + 5)) *
+                              sizeof(char));
+    sprintf(*epsgCode, "%s", value + 5);
+    return;
   }
 }
 
