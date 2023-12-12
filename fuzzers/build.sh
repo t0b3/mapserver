@@ -74,7 +74,7 @@ cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_STATIC=ON \
 make -j$(nproc) mapserver_static
 
 #Fuzzers
-for fuzzer in mapfuzzer shapefuzzer configfuzzer; do
+for fuzzer in mapfuzzer shapefuzzer configfuzzer requestfuzzer; do
     $CC $CFLAGS -Wall -Wextra -I. -I.. -I/usr/include/gdal/. -DPROJ_VERSION_MAJOR=6 -c ../fuzzers/${fuzzer}.c
 
     $CXX $CXXFLAGS $LIB_FUZZING_ENGINE ${fuzzer}.o -o ${fuzzer} \
