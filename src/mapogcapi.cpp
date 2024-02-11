@@ -418,6 +418,8 @@ static std::string getApiRootUrl(mapObj *map) {
                                   "onlineresource")) != NULL)
     return std::string(root);
   else
+    // need a check here that getenv isn't empty, or use some defaults
+    // as we could end up here when testing outside a web environment
     return "http://" + std::string(getenv("SERVER_NAME")) + ":" +
            std::string(getenv("SERVER_PORT")) +
            std::string(getenv("SCRIPT_NAME")) +

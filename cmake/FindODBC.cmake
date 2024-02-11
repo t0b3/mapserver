@@ -44,6 +44,7 @@ find_library(ODBC_LIBRARY
   "C:/ODBC/lib/debug"
   "C:/Program Files/Microsoft SDKs/Windows/v7.0A/Lib"
   "C:/Program Files (x86)/Microsoft SDKs/Windows/v7.0A/Lib"
+  "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.19041.0/um/x64"
   DOC "Specify the ODBC driver manager library here."
 )
 

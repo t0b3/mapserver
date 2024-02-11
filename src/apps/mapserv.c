@@ -139,7 +139,7 @@ int main(int argc, char *argv[]) {
   */
   const char *config_filename = NULL;
   const bool use_command_line_options = getenv("QUERY_STRING") == NULL;
-  if (use_command_line_options) {
+      if (use_command_line_options) {
     /* WARNING:
      * Do not parse command line arguments (especially those that could have
      * dangerous consequences if controlled through a web request), without
