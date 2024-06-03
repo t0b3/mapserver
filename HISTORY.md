@@ -13,6 +13,41 @@ https://mapserver.org/development/changelog/
 
 The online Migration Guide can be found at https://mapserver.org/MIGRATION_GUIDE.html
 
+8.2.0-beta1 release (2024-06-03)
+--------------------------------
+
+- RFC 138 Implementation - Reference SLD files in Mapfiles (RFC 138)
+
+- Python MapScript support up to Python 3.12 (#7059)
+
+- Reacting credentials from log files (#7046)
+
+- Allow includes in feature templates (#7020)
+
+- Allow MVT filtering using WMS facade (#7011)
+
+- Add pasteImage and saveWebImage to Mapscript imageObj (#7015)
+
+- Allow style bindings when using the feature rendering cache (#6964)
+
+- Include list expressions in GetStyles SLD output (#6943)
+
+- Repo restructure (#6919)
+
+- Allow Expressions to be set for LABEL properties using MapScript (#6904)
+
+- Allow expressions in LABEL PRIORITY (#6884)
+
+- Allow Mapfiles to be accessed via URL Keys (#6862)
+
+- Allow NULL shapes to be returned in WFS GetFeature request (#6731)
+
+- Allow custom projections to be requested via WMS (#6795)
+
+- Add Proj and GDAL versions to MapServer version output (#6794)
+
+- Optimise WFS requests by reducing fields selected (#6785)
+
 8.0.0 release (2022-09-12)
 --------------------------
 
