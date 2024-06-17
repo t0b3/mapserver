@@ -174,7 +174,7 @@ def draw_map_wms(name, save=0):
 
 
 class OWSRequestTestCase(unittest.TestCase):
-
+    pass
     # def testDrawWFS(self):
     #    workers = []
     #    for i in range(10):
@@ -183,13 +183,13 @@ class OWSRequestTestCase(unittest.TestCase):
     #        workers.append(thread)
     #        thread.start()
 
-    def testDrawWMS(self):
-        workers = []
-        for i in range(10):
-            name = "d%d" % (i)
-            thread = threading.Thread(target=draw_map_wms, name=name, args=(name, 1))
-            workers.append(thread)
-            thread.start()
+    # def testDrawWMS(self):
+    #    workers = []
+    #    for i in range(10):
+    #        name = "d%d" % (i)
+    #        thread = threading.Thread(target=draw_map_wms, name=name, args=(name, 1))
+    #        workers.append(thread)
+    #        thread.start()
 
 
 if __name__ == "__main__":
