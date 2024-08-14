@@ -1048,7 +1048,7 @@ int msSLDParseRule(CPLXMLNode *psRoot, layerObj *psLayer,
     msSLDParseRasterSymbolizer(psRasterSymbolizer, psLayer, pszUserStyleName);
     /* cppcheck-suppress knownConditionTrueFalse */
     if (nSymbolizer == 0) {
-      //psLayer->type = MS_LAYER_RASTER;
+      psLayer->type = MS_LAYER_RASTER;
     }
   }
 
@@ -1058,7 +1058,7 @@ int msSLDParseRule(CPLXMLNode *psRoot, layerObj *psLayer,
     const int bNewClass = (nSymbolizer == 0);
     msSLDParsePolygonSymbolizer(psPolygonSymbolizer, psLayer, bNewClass,
                                 pszUserStyleName);
-    //psLayer->type = MS_LAYER_POLYGON;
+    psLayer->type = MS_LAYER_POLYGON;
     nSymbolizer++;
   }
 
@@ -1068,7 +1068,7 @@ int msSLDParseRule(CPLXMLNode *psRoot, layerObj *psLayer,
     msSLDParseLineSymbolizer(psLineSymbolizer, psLayer, bNewClass,
                              pszUserStyleName);
     if (bNewClass) {
-      //psLayer->type = MS_LAYER_LINE;
+      psLayer->type = MS_LAYER_LINE;
     }
     if (psLayer->type == MS_LAYER_POLYGON) {
       const int nClassId = psLayer->numclasses - 1;
@@ -1097,7 +1097,7 @@ int msSLDParseRule(CPLXMLNode *psRoot, layerObj *psLayer,
     msSLDParsePointSymbolizer(psPointSymbolizer, psLayer, bNewClass,
                               pszUserStyleName);
     if (bNewClass) {
-      //psLayer->type = MS_LAYER_POINT;
+      psLayer->type = MS_LAYER_POINT;
     }
     if (psLayer->type == MS_LAYER_POLYGON || psLayer->type == MS_LAYER_LINE ||
         psLayer->type == MS_LAYER_RASTER) {
@@ -1125,8 +1125,6 @@ int msSLDParseRule(CPLXMLNode *psRoot, layerObj *psLayer,
   /*      created to contain the label object.                            */
   /* ==================================================================== */
   LOOP_ON_CHILD_ELEMENT(psRoot, psTextSymbolizer, "TextSymbolizer") {
-    if (nSymbolizer == 0)
-      //psLayer->type = MS_LAYER_POINT;
     msSLDParseTextSymbolizer(psTextSymbolizer, psLayer, nSymbolizer > 0,
                              pszUserStyleName);
   }
