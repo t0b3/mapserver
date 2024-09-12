@@ -58,7 +58,7 @@ using json = nlohmann::json;
 #define OGCAPI_TEMPLATE_HTML_COLLECTION_ITEM "collection-item.html"
 #define OGCAPI_TEMPLATE_HTML_OPENAPI "openapi.html"
 
-enum class OGCAPIFormat { JSON, GeoJSON, OpenAPI_V3, HTML };
+enum class OGCAPIFormat { JSON, GeoJSON, OpenAPI_V3, HTML, PNG };
 
 #define OGCAPI_MIMETYPE_JSON "application/json"
 #define OGCAPI_MIMETYPE_GEOJSON "application/geo+json"
@@ -1973,6 +1973,10 @@ int msOGCAPIDispatchRequest(mapObj *map, cgiRequestObj *request) {
   } else if (p && (strcmp(p, "html") == 0 ||
                    strstr(p, OGCAPI_MIMETYPE_HTML) != nullptr)) {
     format = OGCAPIFormat::HTML;
+  } else if (p && (strcmp(p, "png") == 0 ||
+                   strstr(p, OGCAPI_MIMETYPE_HTML) != nullptr)) {
+    // for OGC Maps check against a list of formats?
+    format = OGCAPIFormat::PNG;
   } else if (p) {
     std::string errorMsg("Unsupported format requested: ");
     errorMsg += p;
@@ -2015,6 +2019,52 @@ int msOGCAPIDispatchRequest(mapObj *map, cgiRequestObj *request) {
             0) { // middle argument (3) is the collectionId
       return processCollectionItemsRequest(map, request, request->api_path[3],
                                            NULL, format);
+    }
+
+    if (strcmp(request->api_path[2], "collections") == 0 &&
+        strcmp(request->api_path[4], "map") ==
+            0) { // middle argument (3) is the collectionId
+
+
+        int drawquerymap = MS_FALSE;
+        imageObj *img = msDrawMap(map, drawquerymap);
+        //} else if (strcasecmp(names[i], "WIDTH") == 0) {
+        //  widthfound = true;
+        //  map->width = atoi(values[i]);
+        //} else if (strcasecmp(names[i], "HEIGHT") == 0) {
+        //  heightfound = true;
+        //  map->height = atoi(values[i]);
+        //} else if (strcasecmp(names[i], "FORMAT") == 0) {
+        if (img == NULL) {
+          outputError(OGCAPI_NOT_FOUND_ERROR, "Cannot generate image2");
+        }
+
+        /* Set the HTTP Cache-control headers if they are defined
+           in the map object */
+
+        const char *http_max_age =
+            msOWSLookupMetadata(&(map->web.metadata), "MO", "http_max_age");
+        if (http_max_age) {
+          msIO_setHeader("Cache-Control", "max-age=%s", http_max_age);
+        }
+
+        if (!strcmp(MS_IMAGE_MIME_TYPE(map->outputformat),
+                    "application/json")) {
+            msIO_setHeader("Content-Type", "application/json; charset=utf-8");
+        } else {
+            msOutputFormatResolveFromImage(map, img);
+            msIO_setHeader("Content-Type", "%s",
+                            MS_IMAGE_MIME_TYPE(map->outputformat));
+        }
+
+        msIO_sendHeaders();
+        if (msSaveImage(map, img, NULL) != MS_SUCCESS) {
+            msFreeImage(img);
+            outputError(OGCAPI_NOT_FOUND_ERROR, "Cannot generate image2");
+        }
+        msFreeImage(img);
+
+        return (MS_SUCCESS);
     }
 
   } else if (request->api_path_length == 6) {
