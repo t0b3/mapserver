@@ -4245,7 +4245,7 @@ static int msWMSGetMap(mapObj *map, int nVersion, char **names, char **values,
       GET_LAYER(map, i)->status = MS_OFF;
 
   if (sldrequested && sldspatialfilter) {
-    /* set the quermap style so that only selected features will be returned */
+    /* set the querymap style so that only selected features will be returned */
     map->querymap.status = MS_ON;
     map->querymap.style = MS_SELECTED;
 
@@ -5562,7 +5562,7 @@ int msWMSDispatch(mapObj *map, cgiRequestObj *req, owsRequestObj *ows_request,
 
   /*
   ** GetCapbilities request needs the service parameter defined as WMS:
-  see section 7.1.3.2 wms 1.1.1 specs for decsription.
+  see section 7.1.3.2 wms 1.1.1 specs for description.
   */
   if (request && service == NULL &&
       (strcasecmp(request, "capabilities") == 0 ||
@@ -5693,7 +5693,7 @@ int msWMSDispatch(mapObj *map, cgiRequestObj *req, owsRequestObj *ows_request,
     return msWMSException(map, OWS_VERSION_NOTSET, NULL, wms_exception_format);
   }
 
-  /*check if the version is one of the supported vcersions*/
+  /*check if the version is one of the supported versions*/
   if (nVersion != OWS_1_0_0 && nVersion != OWS_1_0_6 && nVersion != OWS_1_0_7 &&
       nVersion != OWS_1_1_0 && nVersion != OWS_1_1_1 && nVersion != OWS_1_3_0) {
     msSetError(MS_WMSERR,
@@ -5742,7 +5742,7 @@ int msWMSDispatch(mapObj *map, cgiRequestObj *req, owsRequestObj *ows_request,
   bool isContentDependentLegend = false;
   if (strcasecmp(request, "GetLegendGraphic") == 0) {
     /*
-     * check for a BBOX in the request, in that case we have a content-dependant
+     * check for a BBOX in the request, in that case we have a content-dependent
      * legend request, and should be following the GetMap path a bit more
      */
     bool found = false;
@@ -5757,7 +5757,7 @@ int msWMSDispatch(mapObj *map, cgiRequestObj *req, owsRequestObj *ows_request,
     if (found) {
       isContentDependentLegend = true;
       /* getLegendGraphic uses LAYER= , we need to create a LAYERS= value that
-       * is identical we'll suppose that the client is conformat and hasn't
+       * is identical we'll suppose that the client is conformant and hasn't
        * included a LAYERS= parameter in its request */
       for (int i = 0; i < req->NumParams; i++) {
         if (strcasecmp(req->ParamNames[i], "LAYER") == 0) {
