@@ -1295,6 +1295,13 @@ int msDrawVectorLayer(mapObj *map, layerObj *layer, imageObj *image) {
       cache = MS_TRUE; /* only line layers with multiple styles need be cached
                           (I don't think POLYLINE layers need caching - SDL) */
       // we also cache line layers with outlinewidths
+
+      /* we can't handle caching with attribute binding other than for the first
+       * style (#3976) */
+      for (int i = 1; i < layer->class[shape.classindex]->numstyles; i++) {
+        if (layer->class[shape.classindex]->styles[i]->numbindings > 0)
+          cache = MS_FALSE;
+      }
     }
 
     /* With 'STYLEITEM AUTO', we will have the datasource fill the class' */
