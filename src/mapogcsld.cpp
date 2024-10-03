@@ -4419,6 +4419,44 @@ char *msSLDGenerateTextSLD(classObj *psClass, layerObj *psLayer, int nVersion) {
 #endif
 }
 
+/************************************************************************/
+/*                          msSLDGenerateRasterSLD                      */
+/*                                                                      */
+/*      Generate SLD for a Raster layer.                                 */
+/************************************************************************/
+char *msSLDGenerateRasterSLD(styleObj *psStyle, layerObj *psLayer,
+                            int nVersion) {
+#if defined(USE_WMS_SVR) || defined(USE_WFS_SVR) || defined(USE_WCS_SVR) ||    \
+    defined(USE_SOS_SVR)
+  char *pszSLD = NULL;
+  char *pszGraphicSLD = NULL;
+  char szTmp[100];
+  char sNameSpace[10];
+
+  sNameSpace[0] = '\0';
+  if (nVersion > OWS_1_0_0)
+    strcpy(sNameSpace, "se:");
+
+  snprintf(szTmp, sizeof(szTmp), "<%sRasterSymbolizer>\n", sNameSpace);
+  pszSLD = msStringConcatenate(pszSLD, szTmp);
+
+  pszGraphicSLD = msSLDGetGraphicSLD(psStyle, psLayer, 1, nVersion);
+  if (pszGraphicSLD) {
+    pszSLD = msStringConcatenate(pszSLD, pszGraphicSLD);
+    free(pszGraphicSLD);
+  }
+
+  snprintf(szTmp, sizeof(szTmp), "</%sRasterSymbolizer>\n", sNameSpace);
+  pszSLD = msStringConcatenate(pszSLD, szTmp);
+
+  return pszSLD;
+
+#else
+  return NULL;
+
+#endif
+}
+
 #if (defined(USE_WMS_SVR) || defined(USE_WFS_SVR) || defined(USE_WCS_SVR) ||   \
      defined(USE_SOS_SVR))
 
@@ -4568,6 +4606,16 @@ static void msSLDGenerateUserStyle(msStringBuffer *sb, layerObj *psLayer,
             free(pszSLD);
           }
         }
+      } else if (psLayer->type == MS_LAYER_RASTER) {
+        int j;
+        for (j = 0; j < psLayer->_class[i]->numstyles; j++) {
+          styleObj *psStyle = psLayer->_class[i]->styles[j];
+          char *pszSLD = msSLDGenerateRasterSLD(psStyle, psLayer, nVersion);
+          if (pszSLD) {
+            msStringBufferAppend(sb, pszSLD);
+            free(pszSLD);
+          }
+        }
       }
       {
         /* label if it exists */
@@ -4604,7 +4652,7 @@ char *msSLDGenerateSLDLayer(layerObj *psLayer, int nVersion) {
 
   if (psLayer && (psLayer->status == MS_ON || psLayer->status == MS_DEFAULT) &&
       (psLayer->type == MS_LAYER_POINT || psLayer->type == MS_LAYER_LINE ||
-       psLayer->type == MS_LAYER_POLYGON)) {
+       psLayer->type == MS_LAYER_POLYGON || psLayer->type == MS_LAYER_RASTER)) {
 
     int i;
     int numClassGroupNames = 0;
