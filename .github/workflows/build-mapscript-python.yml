@@ -2,6 +2,7 @@ name: Build and test Python MapScript
 
 on:
   push:
+    dispatch:
     branches:
       - '*'
     except:
